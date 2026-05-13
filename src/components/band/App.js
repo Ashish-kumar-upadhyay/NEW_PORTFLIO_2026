@@ -21,7 +21,8 @@ import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 
-const GLTF_PATH = '/assets/kartu.glb';
+// New GLB asset (filename contains spaces).
+const GLTF_PATH = encodeURI('/assets/scene (1).glb');
 const TEXTURE_PATH = '/assets/bandd.png';
 
 useGLTF.preload(GLTF_PATH);
