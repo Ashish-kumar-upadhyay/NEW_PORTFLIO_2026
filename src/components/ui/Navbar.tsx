@@ -23,7 +23,14 @@ export default function Navbar() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20)
 
-      const sections = ['home', 'about', 'portfolio', 'contact']
+      const sections = [
+        'home',
+        'about',
+        'skills',
+        'portfolio',
+        'experience',
+        'contact',
+      ]
 
       for (const sectionId of sections) {
         const section = document.getElementById(sectionId)
@@ -118,7 +125,9 @@ export default function Navbar() {
   const navItems = [
     { label: 'Home', id: 'home' },
     { label: 'About', id: 'about' },
-    { label: 'Portfolio', id: 'portfolio' },
+    { label: 'Skills', id: 'skills' },
+    { label: 'Projects', id: 'portfolio' },
+    { label: 'Experience', id: 'experience' },
     { label: 'Contact', id: 'contact' },
   ]
 
@@ -156,16 +165,20 @@ export default function Navbar() {
           border: '1px solid var(--border)',
         }}
       >
-        <span
+        <a
+          href="#home"
+          onClick={(e) => smoothScrollTo(e, '#home')}
           style={{
             fontFamily: "'DM Mono', monospace",
             fontSize: 13,
             color: 'var(--text-secondary)',
-            letterSpacing: '0.1em',
+            letterSpacing: '0.06em',
+            textDecoration: 'none',
           }}
+          aria-label="Ashish Kumar Upadhyay — Home"
         >
-          ashishupadhyay.qzz.io
-        </span>
+          A. Kumar Upadhyay
+        </a>
 
         {!isMobile && (
           <div style={{ display: 'flex', gap: 40 }}>

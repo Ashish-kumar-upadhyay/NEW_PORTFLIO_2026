@@ -1,11 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { motion, Variants } from "framer-motion";
-import { FileText, ArrowUpRight } from "lucide-react";
-import { supabase } from "@/lib/supabase";
-
-/* ================== ANIMATION ================== */
+import { FileText, ArrowUpRight, MapPin } from "lucide-react";
+import { PERSON } from "@/lib/site";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 35, filter: "blur(8px)" },
@@ -13,10 +12,7 @@ const fadeUp: Variants = {
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: {
-      duration: 1,
-      ease: [0.22, 1, 0.36, 1],
-    },
+    transition: { duration: 1, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
@@ -26,41 +22,28 @@ const slideLeft: Variants = {
     opacity: 1,
     x: 0,
     rotate: 0,
-    transition: {
-      duration: 1.2,
-      ease: [0.22, 1, 0.36, 1],
-    },
+    transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] },
   },
 };
-
-
-/* ================== COMPONENT ================== */
 
 export default function About() {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
-
     check();
     window.addEventListener("resize", check);
-
     return () => window.removeEventListener("resize", check);
   }, []);
 
   const scrollToPortfolio = () => {
-    const el = document.getElementById("portfolio");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
+    document.getElementById("portfolio")?.scrollIntoView({ behavior: "smooth" });
   };
-
-  if (isMobile === null) return null;
-
 
   return (
     <section
       id="about"
+      aria-labelledby="about-heading"
       style={{
         minHeight: "100vh",
         display: "flex",
@@ -78,120 +61,129 @@ export default function About() {
             gap: "32px",
           }}
         >
-          {/* LEFT */}
           <motion.div
             variants={fadeUp}
             initial="hidden"
             whileInView="show"
-            viewport={{ once: false, margin: "-80px" }}
-            style={{
-              maxWidth: "600px",
-              width: "100%",
-            }}
+            viewport={{ once: true, margin: "-80px" }}
+            style={{ maxWidth: "640px", width: "100%" }}
           >
             <motion.div variants={fadeUp} style={{ marginBottom: 16 }}>
               <span
-                style={{
-                  fontFamily: "'DM Mono', monospace",
-                  fontSize: 12,
-                  color: "var(--text-muted)",
-                  letterSpacing: "0.2em",
-                }}
+                className="font-mono text-xs tracking-[0.2em] uppercase"
+                style={{ color: "var(--text-muted)" }}
               >
                 ABOUT ME
               </span>
             </motion.div>
 
-            <motion.div variants={fadeUp}>
-              <div
-                style={{
-                  fontSize: isMobile ? 32 : "clamp(32px,5vw,46px)",
-                  fontWeight: 800,
-                  lineHeight: 1.03,
-                  color: "var(--text-primary)",
-                }}
-              >
-                <div>Ashish</div>
-                <div>Kumar</div>
-                <div>Upadhyay</div>
-              </div>
-            </motion.div>
-
-            <motion.p
-              variants={{
-                hidden: { opacity: 0, y: 40 },
-                show: {
-                  opacity: 1,
-                  y: 0,
-                  transition: {
-                    duration: 1.1,
-                    delay: 0.2,
-                  },
-                },
-              }}
+            <motion.h2
+              id="about-heading"
+              variants={fadeUp}
               style={{
-                marginTop: 18,
-                fontSize: 14,
-                color: "var(--text-secondary)",
-                lineHeight: 1.75,
-                maxWidth: isMobile ? "100%" : "490px",
+                fontSize: isMobile ? 32 : "clamp(32px,5vw,46px)",
+                fontWeight: 800,
+                lineHeight: 1.08,
+                color: "var(--text-primary)",
+                marginBottom: 8,
               }}
             >
-              1+ year freelance experience with Masai trained full stack
-              developer. Currently pursuing BCA with expertise in modern
-              full stack development using Next.js and cutting-edge
-              technologies. Passionate about creating clean, responsive,
-              and visually stunning web applications that deliver optimal
-              digital experiences.
+              {PERSON.name}
+            </motion.h2>
+
+            <motion.p
+              variants={fadeUp}
+              className="flex items-center gap-2 text-sm mb-4"
+              style={{ color: "var(--text-muted)" }}
+            >
+              <MapPin size={14} aria-hidden />
+              {PERSON.jobTitle} · {PERSON.location}
             </motion.p>
 
-            {/* QUOTE */}
-            <motion.div
-              variants={{
-                hidden: { opacity: 0, scale: 0.94 },
-                show: {
-                  opacity: 1,
-                  scale: 1,
-                  transition: {
-                    duration: 0.9,
-                    delay: 0.3,
-                  },
-                },
+            <motion.p
+              variants={fadeUp}
+              style={{
+                fontSize: 14,
+                color: "var(--text-secondary)",
+                lineHeight: 1.85,
+                maxWidth: isMobile ? "100%" : "540px",
               }}
+            >
+              {PERSON.summary} With over a year of freelance experience and
+              Masai-trained full stack fundamentals, Ashish Kumar Upadhyay
+              transforms ideas into polished, production-ready products — from
+              e-commerce and ed-tech to booking systems and brand websites.
+            </motion.p>
+
+            <motion.p
+              variants={fadeUp}
+              style={{
+                marginTop: 14,
+                fontSize: 14,
+                color: "var(--text-secondary)",
+                lineHeight: 1.85,
+                maxWidth: isMobile ? "100%" : "540px",
+              }}
+            >
+              <strong style={{ color: "var(--text-primary)" }}>
+                Skills & experience:
+              </strong>{" "}
+              React.js, Next.js, JavaScript, TypeScript, Firebase, Node.js,
+              Express.js, MongoDB, Git, GitHub, and Vercel deployments. Comfortable
+              across the stack — UI engineering, REST APIs, authentication, and
+              database design.
+            </motion.p>
+
+            <motion.p
+              variants={fadeUp}
+              style={{
+                marginTop: 14,
+                fontSize: 14,
+                color: "var(--text-secondary)",
+                lineHeight: 1.85,
+                maxWidth: isMobile ? "100%" : "540px",
+              }}
+            >
+              <strong style={{ color: "var(--text-primary)" }}>Career goals:</strong>{" "}
+              Join a product-focused team or grow as a senior freelance developer,
+              shipping high-impact features for global clients while building a
+              recognizable personal brand as {PERSON.name}.
+            </motion.p>
+
+            <motion.blockquote
+              variants={fadeUp}
               style={{
                 marginTop: 18,
-                padding: "12px 25px",
+                padding: "12px 20px",
                 borderRadius: 10,
                 border: "1px solid var(--border)",
                 background: "var(--bg-card)",
-                fontSize: 12,
+                fontSize: 13,
                 fontStyle: "italic",
-                display: "inline-block",
-                width: "fit-content",
+                color: "var(--text-secondary)",
               }}
             >
-              “Transforming ideas into powerful full stack solutions with
-              modern technologies and clean code practices.”
-            </motion.div>
+              “Clean code, fast UX, and reliable deployments — the foundation of
+              every project I ship.”
+            </motion.blockquote>
 
-            {/* BUTTONS */}
             <motion.div
               variants={fadeUp}
               style={{
                 display: "flex",
                 gap: 10,
-                marginTop: 18,
+                marginTop: 20,
                 flexWrap: "wrap",
               }}
             >
-              {/* DOWNLOAD CV */}
               <a
-                href="https://drive.google.com/file/d/1K_ENQEWvcDYr4RY7j83oSt6vI1nCMsSw/view?usp=sharing"
+                href={PERSON.resumeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ textDecoration: "none" }}
               >
                 <button
+                  type="button"
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -204,25 +196,15 @@ export default function About() {
                     fontSize: 13,
                     fontWeight: 600,
                     cursor: "pointer",
-                    transition: "transform 0.25s ease, opacity 0.25s ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform =
-                      "translateY(-2px) scale(1.03)";
-                    e.currentTarget.style.opacity = "0.92";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "translateY(0) scale(1)";
-                    e.currentTarget.style.opacity = "1";
                   }}
                 >
-                  <FileText size={14} />
-                  Download CV
+                  <FileText size={14} aria-hidden />
+                  Download Resume
                 </button>
               </a>
 
-              {/* VIEW PROJECTS */}
               <button
+                type="button"
                 onClick={scrollToPortfolio}
                 style={{
                   display: "flex",
@@ -236,61 +218,46 @@ export default function About() {
                   fontSize: 13,
                   fontWeight: 600,
                   cursor: "pointer",
-                  transition: "transform 0.25s ease, opacity 0.25s ease",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform =
-                    "translateY(-2px) scale(1.03)";
-                  e.currentTarget.style.opacity = "0.85";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0) scale(1)";
-                  e.currentTarget.style.opacity = "1";
                 }}
               >
-                <ArrowUpRight size={14} />
+                <ArrowUpRight size={14} aria-hidden />
                 View Projects
               </button>
             </motion.div>
           </motion.div>
 
-          {/* IMAGE */}
-          {!isMobile && (
-            <motion.div
-              variants={slideLeft}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: false }}
+          <motion.div
+            variants={slideLeft}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className={isMobile ? "mt-4" : ""}
+            style={{
+              width: isMobile ? "100%" : "42%",
+              display: "flex",
+              justifyContent: isMobile ? "center" : "flex-end",
+            }}
+          >
+            <div
               style={{
-                width: "48%",
-                display: "flex",
-                justifyContent: "flex-end",
+                padding: 12,
+                borderRadius: "50%",
+                border: "1px solid var(--border)",
+                transform: isMobile ? "none" : "translateX(-60px)",
               }}
             >
-              <div
-                style={{
-                  padding: 12,
-                  borderRadius: "50%",
-                  border: "1px solid var(--border)",
-                  transform: "translateX(-80px)",
-                }}
-              >
-                <img
-                  src="/assets/PP.png"
-                  alt="Profile"
-                  style={{
-                    width: 240,
-                    height: 240,
-                    borderRadius: "50%",
-                    objectFit: "cover",
-                    display: "block",
-                  }}
-                />
-              </div>
-            </motion.div>
-          )}
+              <Image
+                src={PERSON.profileImage}
+                alt={`${PERSON.name} — professional profile photo`}
+                width={260}
+                height={260}
+                loading="lazy"
+                className="rounded-full object-cover block"
+                style={{ width: isMobile ? 200 : 240, height: isMobile ? 200 : 240 }}
+              />
+            </div>
+          </motion.div>
         </div>
-
       </div>
     </section>
   );

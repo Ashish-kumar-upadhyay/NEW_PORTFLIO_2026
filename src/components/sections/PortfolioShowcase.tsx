@@ -28,8 +28,9 @@ export default function PortfolioShowcase() {
     loading,
   } = usePortfolio()
 
-  // Combine local data with database data
-  const allProjects = [...localProjects, ...projects]
+  const localIds = new Set(localProjects.map((p) => String(p.id)))
+  const dbOnly = projects.filter((p) => !localIds.has(String(p.id)))
+  const allProjects = [...localProjects, ...dbOnly]
   const allCertificates = [...localCertificates, ...certificates]
   const allTechStack = [...localTechStack, ...techStacks]
 
@@ -99,13 +100,13 @@ export default function PortfolioShowcase() {
           transition={{ duration: 0.9 }}
           className="text-center mb-8"
         >
-          <h1 className="text-3xl md:text-5xl font-bold mb-3">
-            Portfolio Showcase
-          </h1>
+          <h2 className="text-3xl md:text-5xl font-bold mb-3">
+            Featured Projects
+          </h2>
 
           <p className="text-white/55 max-w-xl mx-auto text-sm md:text-base">
-            Explore my journey through projects,
-            certifications, and technical expertise.
+            Real-world applications built by Ashish Kumar Upadhyay — e-commerce,
+            ed-tech, hospitality, and modern brand websites.
           </p>
         </motion.div>
 
@@ -199,6 +200,16 @@ export default function PortfolioShowcase() {
                               }
                               image={item.image_url || item.image}
                               live_url={item.live_url || item.link}
+                              github={item.github_url || item.github}
+                              tech={
+                                item.tech ||
+                                (item.technologies
+                                  ? String(item.technologies)
+                                      .split(",")
+                                      .map((t: string) => t.trim())
+                                      .filter(Boolean)
+                                  : [])
+                              }
                               id={item.id}
                             />
                           </motion.div>

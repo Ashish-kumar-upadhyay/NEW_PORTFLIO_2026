@@ -1,20 +1,28 @@
 import type { MetadataRoute } from "next";
 import { createClient } from "@supabase/supabase-js";
-
-const defaultSite = "https://ashishupadhyay.qzz.io";
+import { SITE_URL } from "@/lib/site";
+import { projects as localProjects } from "@/data/projects";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || defaultSite;
+  const now = new Date();
 
   const entries: MetadataRoute.Sitemap = [
     {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
+      url: SITE_URL,
+      lastModified: now,
+      changeFrequency: "weekly",
       priority: 1,
     },
   ];
+
+  for (const project of localProjects) {
+    entries.push({
+      url: `${SITE_URL}/portfolio/${project.id}`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.85,
+    });
+  }
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -24,17 +32,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const supabase = createClient(supabaseUrl, supabaseKey);
     const { data } = await supabase.from("projects").select("id");
     if (data?.length) {
+      const localIds = new Set(localProjects.map((p) => p.id));
       for (const row of data) {
+        if (localIds.has(String(row.id))) continue;
         entries.push({
-          url: `${baseUrl}/portfolio/${row.id}`,
-          lastModified: new Date(),
+          url: `${SITE_URL}/portfolio/${row.id}`,
+          lastModified: now,
           changeFrequency: "monthly",
           priority: 0.8,
         });
       }
     }
   } catch {
-    // Homepage-only sitemap if Supabase is unreachable
+    // Supabase unreachable — local entries still published
   }
 
   return entries;

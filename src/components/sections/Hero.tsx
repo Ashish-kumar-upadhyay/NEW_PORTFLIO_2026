@@ -1,11 +1,21 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { FileText, Mail } from "lucide-react";
 import App from "@/components/band/App";
 import TextType from "@/components/band/TextType";
+import { PERSON } from "@/lib/site";
 
-const skills = ["Next.js", "MongoDB", "Tailwind", "PostgreSQL", "Docker", "AWS"];
+const skills = [
+  "React.js",
+  "Next.js",
+  "Node.js",
+  "MongoDB",
+  "Firebase",
+  "TypeScript",
+];
 
 type HeroProps = {
   showApp: boolean;
@@ -38,9 +48,14 @@ export default function Hero({ showApp }: HeroProps) {
     };
   }, []);
 
+  const scrollToContact = () => {
+    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <section
       id="home"
+      aria-label="Introduction"
       className="px-6 md:pl-[120px] md:pr-[60px]"
       style={{
         minHeight: "100vh",
@@ -51,7 +66,6 @@ export default function Hero({ showApp }: HeroProps) {
         overflow: "hidden",
       }}
     >
-      {/* APP LAYER */}
       <div
         style={{
           position: "absolute",
@@ -59,45 +73,56 @@ export default function Hero({ showApp }: HeroProps) {
           zIndex: 40,
           pointerEvents: showApp ? "auto" : "none",
         }}
+        aria-hidden={!showApp}
       >
         {showApp && <App />}
       </div>
 
-      {/* TEXT */}
       <div
-        className="md:max-w-[600px]"
-        style={{
-          width: "100%",
-          position: "relative",
-          zIndex: 5,
-        }}
+        className="md:max-w-[640px] w-full relative z-[5] flex flex-col md:flex-row md:items-center md:gap-10"
       >
-        {/* LABEL */}
+        {/* Profile — visible on mobile & as accent on desktop */}
         <motion.div
           initial={false}
           animate={
             startAnim
-              ? { opacity: 1, y: 0, filter: "blur(0px)" }
-              : { opacity: 0, y: 30, filter: "blur(12px)" }
+              ? { opacity: 1, scale: 1 }
+              : { opacity: 0, scale: 0.9 }
           }
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          style={{ marginBottom: 20 }}
+          className="mb-6 md:mb-0 shrink-0 md:hidden"
         >
-          <span
-            style={{
-              fontFamily: "'DM Mono', monospace",
-              fontSize: 12,
-              color: "var(--text-muted)",
-              letterSpacing: "0.2em",
-              textTransform: "uppercase",
-            }}
-          >
-            ✦ Available for work
-          </span>
+          <div className="w-[88px] h-[88px] rounded-full border border-white/20 p-1 overflow-hidden">
+            <Image
+              src={PERSON.profileImage}
+              alt={`${PERSON.name} — Full Stack Developer`}
+              width={88}
+              height={88}
+              priority
+              className="rounded-full object-cover w-full h-full"
+            />
+          </div>
         </motion.div>
 
-        {/* HEADING */}
-        <div>
+        <div className="flex-1">
+          <motion.div
+            initial={false}
+            animate={
+              startAnim
+                ? { opacity: 1, y: 0, filter: "blur(0px)" }
+                : { opacity: 0, y: 30, filter: "blur(12px)" }
+            }
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            style={{ marginBottom: 16 }}
+          >
+            <span
+              className="font-mono text-xs tracking-[0.2em] uppercase"
+              style={{ color: "var(--text-muted)" }}
+            >
+              ✦ {PERSON.location} · Available for work
+            </span>
+          </motion.div>
+
           <motion.h1
             initial={false}
             animate={
@@ -105,247 +130,157 @@ export default function Hero({ showApp }: HeroProps) {
                 ? { opacity: 1, scale: 1, y: 0 }
                 : { opacity: 0, scale: 0.85, y: 50 }
             }
-            transition={{
-              duration: 1,
-              ease: [0.22, 1, 0.36, 1],
-            }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            className="font-extrabold leading-[1.05] tracking-tight mb-2"
             style={{
-              fontSize: "clamp(32px, 6vw, 62px)",
-              fontWeight: 800,
-              lineHeight: 1.05,
+              fontSize: "clamp(28px, 5.5vw, 52px)",
               color: "var(--text-primary)",
-              letterSpacing: "-0.03em",
-              marginBottom: 0,
             }}
           >
-            Fullstack
+            {PERSON.name}
           </motion.h1>
 
-          <motion.h1
+          <motion.p
             initial={false}
             animate={
               startAnim
-                ? { opacity: 1, x: 0, rotate: 0 }
-                : { opacity: 0, x: -80, rotate: -4 }
+                ? { opacity: 1, x: 0 }
+                : { opacity: 0, x: -40 }
             }
             transition={{
               duration: 1,
-              delay: 0.2,
+              delay: 0.15,
               ease: [0.22, 1, 0.36, 1],
             }}
-            style={{
-              fontSize: "clamp(32px, 6vw, 62px)",
-              fontWeight: 800,
-              lineHeight: 1.05,
-              color: "var(--text-secondary)",
-              letterSpacing: "-0.03em",
-              marginBottom: 24,
-            }}
+            className="text-lg md:text-2xl font-semibold mb-5"
+            style={{ color: "var(--text-secondary)" }}
           >
-            Developer
-          </motion.h1>
-        </div>
+            {PERSON.jobTitle}
+          </motion.p>
 
-        {/* STATUS */}
-        <motion.div
-          initial={false}
-          animate={startAnim ? { opacity: 1, x: 0 } : { opacity: 0, x: 40 }}
-          transition={{ duration: 0.8, delay: 0.35 }}
-          style={{ marginBottom: 12 }}
-        >
-          <span
-            style={{
-              fontFamily: "'DM Mono', monospace",
-              fontSize: 15,
-              color: "var(--text-secondary)",
-              letterSpacing: "0.1em",
-            }}
+          <motion.div
+            initial={false}
+            animate={startAnim ? { opacity: 1, x: 0 } : { opacity: 0, x: 40 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            style={{ marginBottom: 14 }}
           >
-            <TextType
-              text={["Full Stack Developer", "Freelancer", "DevOps Engineer"]}
-              typingSpeed={75}
-              pauseDuration={1500}
-              showCursor
-              cursorCharacter="_"
-              deletingSpeed={50}
-              cursorBlinkDuration={0.5}
-            />
-          </span>
-        </motion.div>
-
-        {/* DESC */}
-        <motion.div
-          initial={false}
-          animate={
-            startAnim
-              ? { opacity: 1, y: 0, scale: 1 }
-              : { opacity: 0, y: 50, scale: 0.96 }
-          }
-          transition={{ duration: 1, delay: 0.5 }}
-          style={{
-            marginBottom: 28,
-            width: "100%",
-            maxWidth: 460, // batas lebar biar jadi 3 baris
-          }}
-        >
-          <p
-            style={{
-              fontSize: 14,
-              color: "var(--text-secondary)",
-              lineHeight: 1.9,
-              letterSpacing: "0.01em",
-              textWrap: "pretty",
-            }}
-          >
-            Full Stack Developer & Freelancer specializing in modern web applications.
-            Expert in Next.js, MongoDB, and cloud deployment. Creating scalable,
-            efficient solutions with clean code and best practices.
-          </p>
-        </motion.div>
-
-        {/* SKILLS */}
-        <motion.div
-          initial="hidden"
-          animate={startAnim ? "visible" : "hidden"}
-          variants={{
-            hidden: {},
-            visible: {
-              transition: {
-                staggerChildren: 0.12,
-                delayChildren: 0.7,
-              },
-            },
-          }}
-          style={{
-            display: "flex",
-            gap: 8,
-            flexWrap: "wrap",
-            marginBottom: 28,
-          }}
-        >
-          {skills.map((skill) => (
-            <motion.span
-              key={skill}
-              variants={{
-                hidden: { opacity: 0, y: 25, scale: 0.85 },
-                visible: { opacity: 1, y: 0, scale: 1 },
-              }}
-              transition={{ duration: 0.5 }}
-              style={{
-                fontFamily: "'DM Mono', monospace",
-                fontSize: 11,
-                color: "var(--text-secondary)",
-                border: "1px solid var(--border)",
-                borderRadius: 999,
-                padding: "5px 12px",
-                backgroundColor: "var(--bg-card)",
-              }}
+            <span
+              className="font-mono text-sm"
+              style={{ color: "var(--text-secondary)", letterSpacing: "0.08em" }}
             >
-              {skill}
-            </motion.span>
-          ))}
-        </motion.div>
+              <TextType
+                text={[
+                  "Full Stack Developer",
+                  "React.js & Next.js Specialist",
+                  "Freelance Developer",
+                ]}
+                typingSpeed={75}
+                pauseDuration={1500}
+                showCursor
+                cursorCharacter="_"
+                deletingSpeed={50}
+                cursorBlinkDuration={0.5}
+              />
+            </span>
+          </motion.div>
 
-        {/* FOOTER */}
-        <motion.div
-          initial={false}
-          animate={startAnim ? { opacity: 1, y: 0 } : { opacity: 0, y: 25 }}
-          transition={{ duration: 0.8, delay: 1 }}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 6,
-          }}
-        >
-          <span
-            style={{
-              fontFamily: "'DM Mono', monospace",
-              fontSize: 13,
-              color: "var(--text-muted)",
-            }}
+          <motion.p
+            initial={false}
+            animate={
+              startAnim
+                ? { opacity: 1, y: 0, scale: 1 }
+                : { opacity: 0, y: 50, scale: 0.96 }
+            }
+            transition={{ duration: 1, delay: 0.45 }}
+            className="mb-6 max-w-[480px] text-sm leading-relaxed"
+            style={{ color: "var(--text-secondary)" }}
           >
-            ↓ explore my work below
-          </span>
+            {PERSON.summary.split(".")[0]}.
+            Building scalable web apps with clean code, modern UI, and
+            production-ready deployments.
+          </motion.p>
 
-          <span
-            style={{
-              fontFamily: "'DM Mono', monospace",
-              fontSize: 13,
-              color: "var(--text-muted)",
+          <motion.div
+            initial="hidden"
+            animate={startAnim ? "visible" : "hidden"}
+            variants={{
+              hidden: {},
+              visible: { transition: { staggerChildren: 0.1, delayChildren: 0.55 } },
             }}
+            className="flex flex-wrap gap-2 mb-7"
           >
-            ↗ open to full-time & freelance opportunities
-          </span>
-        </motion.div>
+            {skills.map((skill) => (
+              <motion.span
+                key={skill}
+                variants={{
+                  hidden: { opacity: 0, y: 20, scale: 0.85 },
+                  visible: { opacity: 1, y: 0, scale: 1 },
+                }}
+                className="font-mono text-[11px] rounded-full px-3 py-1 border"
+                style={{
+                  color: "var(--text-secondary)",
+                  borderColor: "var(--border)",
+                  backgroundColor: "var(--bg-card)",
+                }}
+              >
+                {skill}
+              </motion.span>
+            ))}
+          </motion.div>
+
+          <motion.div
+            initial={false}
+            animate={startAnim ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.8, delay: 0.65 }}
+            className="flex flex-wrap gap-3 mb-8"
+          >
+            <a
+              href={PERSON.resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-white text-black text-sm font-semibold hover:opacity-90 transition"
+            >
+              <FileText size={15} aria-hidden />
+              Download Resume
+            </a>
+            <button
+              type="button"
+              onClick={scrollToContact}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-white text-white text-sm font-semibold hover:bg-white/10 transition"
+            >
+              <Mail size={15} aria-hidden />
+              Contact Me
+            </button>
+          </motion.div>
+
+          <motion.div
+            initial={false}
+            animate={startAnim ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.8, delay: 0.9 }}
+            className="flex flex-col gap-1.5 font-mono text-[13px]"
+            style={{ color: "var(--text-muted)" }}
+          >
+            <span>↓ explore projects & experience below</span>
+            <span>↗ open to full-time & freelance opportunities</span>
+          </motion.div>
+        </div>
       </div>
-      {/* SCROLL INDICATOR */}
+
       <motion.div
         initial={false}
         animate={startAnim ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-        transition={{
-          duration: 0.9,
-          delay: 1.2,
-          ease: [0.22, 1, 0.36, 1],
-        }}
-        style={{
-          position: "absolute",
-          bottom: 38,
-          left: "50%",
-          transform: "translateX(-50%)",
-          zIndex: 20,
-          pointerEvents: "none",
-        }}
+        transition={{ duration: 0.9, delay: 1.2, ease: [0.22, 1, 0.36, 1] }}
+        className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 pointer-events-none hidden sm:flex"
+        aria-hidden
       >
-        {/* SCROLL INDICATOR */}
-<motion.div
-  initial={false}
-  animate={
-    startAnim
-      ? { opacity: 1, y: 0 }
-      : { opacity: 0, y: 40 }
-  }
-  transition={{
-    duration: 0.9,
-    delay: 1.2,
-    ease: [0.22, 1, 0.36, 1],
-  }}
-  className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 pointer-events-none w-full flex justify-center"
->
-  <motion.div
-    animate={{
-      y: [0, 6, 0],
-      opacity: [1, 0.65, 1],
-    }}
-    transition={{
-      duration: 1.4,
-      repeat: Infinity,
-      ease: 'easeInOut',
-    }}
-    className="flex items-center justify-center gap-2"
-  >
-    <span
-      style={{
-        fontFamily: "'DM Mono', monospace",
-        fontSize: 11,
-        letterSpacing: '0.2em',
-        textTransform: 'uppercase',
-        color: 'var(--text-muted)',
-      }}
-    >
-      Scroll
-    </span>
-
-    <span
-      style={{
-        fontSize: 16,
-        color: 'var(--text-secondary)',
-        lineHeight: 1,
-      }}
-    >
-      ↓
-    </span>
-  </motion.div>
-</motion.div>
+        <motion.div
+          animate={{ y: [0, 6, 0], opacity: [1, 0.65, 1] }}
+          transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
+          className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em]"
+          style={{ color: "var(--text-muted)" }}
+        >
+          Scroll <span>↓</span>
+        </motion.div>
       </motion.div>
     </section>
   );
