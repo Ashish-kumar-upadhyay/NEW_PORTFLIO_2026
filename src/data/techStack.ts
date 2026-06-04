@@ -46,6 +46,12 @@ export const techStack: TechStack[] = [
     category: "frontend",
   },
   {
+    id: "tailwind",
+    name: "Tailwind CSS",
+    logo_url: "/assets/tailwind.svg",
+    category: "frontend",
+  },
+  {
     id: "firebase",
     name: "Firebase",
     logo_url: cdn("firebase/firebase-plain.svg"),
@@ -67,6 +73,12 @@ export const techStack: TechStack[] = [
     id: "mongodb",
     name: "MongoDB",
     logo_url: "/assets/mongodb.svg",
+    category: "database",
+  },
+  {
+    id: "postgresql",
+    name: "PostgreSQL",
+    logo_url: "/assets/postgresql.svg",
     category: "database",
   },
   {

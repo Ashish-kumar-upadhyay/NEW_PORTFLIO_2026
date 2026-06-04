@@ -82,7 +82,7 @@ export default function CommentsSection() {
         ease: smoothEase,
       }}
       viewport={{ once: false, amount: 0.2 }}
-      className="rounded-[28px] md:rounded-[34px] border border-white/10 bg-white/5 backdrop-blur-xl p-5 md:p-8"
+      className="rounded-[28px] md:rounded-[34px] border border-white/10 bg-white/5 backdrop-blur-xl p-5 md:p-8 h-full w-full flex flex-col min-h-[100%]"
     >
       {/* HEADER */}
       <div className="mb-5 md:mb-6">
@@ -101,23 +101,22 @@ export default function CommentsSection() {
         initial="hidden"
         whileInView="show"
         viewport={{ once: false }}
-        className="space-y-3 md:space-y-4 mb-5 md:mb-6"
+        className="flex-1 flex flex-col space-y-3 md:space-y-4 min-h-0"
       >
         <motion.input
           variants={itemVariants}
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Your Name"
-          className="w-full rounded-2xl border border-white/15 bg-black/20 px-4 py-3 md:py-4 outline-none focus:border-white"
+          className="w-full shrink-0 rounded-2xl border border-white/15 bg-black/20 px-4 py-3 md:py-4 outline-none focus:border-white"
         />
 
         <motion.textarea
           variants={itemVariants}
-          rows={4}
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           placeholder="Your Comment"
-          className="w-full rounded-2xl border border-white/15 bg-black/20 px-4 py-3 md:py-4 outline-none resize-none focus:border-white"
+          className="w-full flex-1 min-h-[200px] lg:min-h-0 rounded-2xl border border-white/15 bg-black/20 px-4 py-3 md:py-4 outline-none resize-none focus:border-white"
         />
 
         {/* STATUS MESSAGE */}
@@ -141,7 +140,7 @@ export default function CommentsSection() {
           whileTap={{ scale: 0.98 }}
           onClick={handleSubmit}
           disabled={loading || isLoading}
-          className="w-full rounded-2xl py-3 md:py-4 bg-white/10 border border-white/10 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full shrink-0 mt-auto rounded-2xl py-3 md:py-4 bg-white/10 border border-white/10 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {(loading || isLoading) ? (
             <>

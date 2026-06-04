@@ -21,6 +21,9 @@ export default function usePortfolio() {
   }, [])
 
   const loadPortfolio = async () => {
+    // Show local data immediately; Supabase loads in background
+    setLoading(false)
+
     const cachedProjects =
       sessionStorage.getItem(
         'portfolioProjects'
@@ -80,8 +83,6 @@ export default function usePortfolio() {
       'portfolioTechStacks',
       JSON.stringify(techStacksData || [])
     )
-
-    setLoading(false)
   }
 
   return {

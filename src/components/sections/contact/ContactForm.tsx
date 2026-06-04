@@ -3,8 +3,7 @@
 import { useState } from 'react'
 import { motion, Variants } from 'framer-motion'
 import { Send, User, Mail, MessageSquare } from 'lucide-react'
-import { FaLinkedinIn, FaGithub, FaInstagram } from 'react-icons/fa'
-import { PERSON, SOCIAL } from '@/lib/site'
+import { PERSON } from '@/lib/site'
 
 const smoothEase: [number, number, number, number] = [
   0.22,
@@ -22,32 +21,12 @@ const fieldVariants: Variants = {
   },
 }
 
-const contactLinks = [
-  {
-    label: 'Email',
-    href: `mailto:${PERSON.email}`,
-    value: PERSON.email,
-    icon: Mail,
-  },
-  {
-    label: 'LinkedIn',
-    href: SOCIAL.linkedin,
-    value: 'LinkedIn Profile',
-    icon: FaLinkedinIn,
-  },
-  {
-    label: 'GitHub',
-    href: SOCIAL.github,
-    value: 'GitHub Profile',
-    icon: FaGithub,
-  },
-  {
-    label: 'Instagram',
-    href: SOCIAL.instagram,
-    value: 'Instagram Profile',
-    icon: FaInstagram,
-  },
-]
+const emailLink = {
+  label: 'Email',
+  href: `mailto:${PERSON.email}`,
+  value: PERSON.email,
+  icon: Mail,
+}
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -97,7 +76,7 @@ export default function ContactForm() {
       whileInView={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.8, ease: smoothEase }}
       viewport={{ once: true, amount: 0.2 }}
-      className="rounded-[28px] border border-white/10 bg-white/[0.04] backdrop-blur-xl p-5 md:p-8 flex flex-col h-full"
+      className="rounded-[28px] border border-white/10 bg-white/[0.04] backdrop-blur-xl p-5 md:p-8 flex flex-col h-full w-full min-h-full"
     >
       <motion.div
         variants={fieldVariants}
@@ -111,27 +90,17 @@ export default function ContactForm() {
         </p>
       </motion.div>
 
-      <ul className="space-y-2 mb-6" aria-label="Contact links">
-        {contactLinks.map((link) => {
-          const Icon = link.icon
-          return (
-            <li key={link.label}>
-              <a
-                href={link.href}
-                target={link.label === 'Email' ? undefined : '_blank'}
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 text-sm text-white/65 hover:text-white transition py-1.5"
-              >
-                <Icon size={16} className="shrink-0 text-white/40" aria-hidden />
-                <span className="font-mono text-xs text-white/40 w-16 shrink-0">
-                  {link.label}
-                </span>
-                <span className="truncate">{link.value}</span>
-              </a>
-            </li>
-          )
-        })}
-      </ul>
+      <a
+        href={emailLink.href}
+        className="flex items-center gap-3 text-sm text-white/65 hover:text-white transition py-1.5 mb-6"
+        aria-label={`Email ${PERSON.name}`}
+      >
+        <Mail size={16} className="shrink-0 text-white/40" aria-hidden />
+        <span className="font-mono text-xs text-white/40 w-16 shrink-0">
+          {emailLink.label}
+        </span>
+        <span className="truncate">{emailLink.value}</span>
+      </a>
 
       <form onSubmit={handleSubmit} className="space-y-4 flex-1" noValidate>
         <motion.div variants={fieldVariants} initial="hidden" whileInView="show" viewport={{ once: true }}>

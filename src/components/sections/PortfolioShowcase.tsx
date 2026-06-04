@@ -6,6 +6,7 @@ import {
   X,
   ChevronDown,
   ChevronUp,
+  ExternalLink,
 } from 'lucide-react'
 import usePortfolio from '@/hooks/usePortfolio'
 import PortfolioCard from './PortfolioCard'
@@ -28,11 +29,25 @@ export default function PortfolioShowcase() {
     loading,
   } = usePortfolio()
 
-  const localIds = new Set(localProjects.map((p) => String(p.id)))
-  const dbOnly = projects.filter((p) => !localIds.has(String(p.id)))
-  const allProjects = [...localProjects, ...dbOnly]
-  const allCertificates = [...localCertificates, ...certificates]
-  const allTechStack = [...localTechStack, ...techStacks]
+  const localProjectIds = new Set(localProjects.map((p) => String(p.id)))
+  const dbOnlyProjects = projects.filter(
+    (p) => !localProjectIds.has(String(p.id))
+  )
+  const allProjects = [...localProjects, ...dbOnlyProjects]
+
+  const localCertIds = new Set(localCertificates.map((c) => String(c.id)))
+  const dbOnlyCerts = certificates.filter(
+    (c) => !localCertIds.has(String(c.id))
+  )
+  const allCertificates = [...localCertificates, ...dbOnlyCerts]
+
+  const localTechIds = new Set(localTechStack.map((t) => String(t.id)))
+  const dbOnlyTech = techStacks.filter(
+    (t) => !localTechIds.has(String(t.id))
+  )
+  const allTechStack = [...localTechStack, ...dbOnlyTech]
+
+  const hasProjects = allProjects.length > 0
 
   const [activeTab, setActiveTab] =
     useState('projects')
@@ -43,12 +58,11 @@ export default function PortfolioShowcase() {
   const [previewImage, setPreviewImage] =
     useState('')
 
-  const [showAllProjects, setShowAllProjects] =
-    useState(false)
+  const [showAllProjects, setShowAllProjects] = useState(true)
 
   const displayedProjects = showAllProjects
     ? allProjects
-    : allProjects.slice(0, 3)
+    : allProjects.slice(0, 4)
 
   return (
     <>
@@ -165,9 +179,13 @@ export default function PortfolioShowcase() {
                   className="grid md:grid-cols-2 gap-8 px-1"
                 >
                   <AnimatePresence mode="popLayout">
-                    {!loading &&
-                      displayedProjects.map(
-                        (item, i) => (
+                    {loading && !hasProjects && (
+                      <div className="col-span-full text-center text-white/50 py-16">
+                        Loading projects...
+                      </div>
+                    )}
+                    {hasProjects &&
+                      displayedProjects.map((item, i) => (
                           <motion.div
                             key={item.id}
                             layout
@@ -219,8 +237,7 @@ export default function PortfolioShowcase() {
                 </motion.div>
 
                 {/* SEE MORE / LESS */}
-                {!loading &&
-                  allProjects.length > 3 && (
+                {hasProjects && allProjects.length > 4 && (
                     <motion.div
                       layout
                       transition={{
@@ -294,9 +311,13 @@ export default function PortfolioShowcase() {
             {/* CERTIFICATES */}
             {activeTab === 'certificates' && (
               <div className="flex justify-center">
-                <div className="grid md:grid-cols-2 gap-8 px-1 max-w-4xl w-full">
-                  {!loading &&
-                    allCertificates.map((item, i) => (
+                <div className="grid md:grid-cols-2 gap-8 px-1 max-w-5xl w-full">
+                  {allCertificates.length === 0 && loading && (
+                    <div className="col-span-full text-center text-white/50 py-16">
+                      Loading certificates...
+                    </div>
+                  )}
+                  {allCertificates.map((item, i) => (
                       <motion.div
                         key={item.id}
                         initial={{
@@ -320,17 +341,17 @@ export default function PortfolioShowcase() {
                           )
                           setPreviewOpen(true)
                         }}
-                        className="group cursor-pointer rounded-[26px] border border-white/10 bg-white/5 p-6 backdrop-blur-xl"
+                        className="group cursor-pointer rounded-[26px] border border-white/10 bg-white/5 p-6 backdrop-blur-xl flex flex-col items-center"
                       >
-                        <div className="rounded-2xl overflow-hidden border border-white/10 mb-4">
+                        <div className="w-fit max-w-full mx-auto rounded-2xl overflow-hidden border border-white/10 mb-4 bg-black/10">
                           <img
                             src={item.image}
-                            className="w-full h-auto object-contain group-hover:scale-105 transition duration-500"
-                            style={{ maxHeight: '320px' }}
+                            alt={item.title}
+                            className="block w-auto h-auto max-h-[360px] max-w-full object-contain group-hover:scale-[1.02] transition duration-500"
                           />
                         </div>
 
-                        <h3 className="text-[19px] font-semibold mb-3 text-center text-white/90">
+                        <h3 className="text-[19px] font-semibold mb-3 text-center text-white/90 w-full">
                           {item.title}
                         </h3>
                         
@@ -341,8 +362,21 @@ export default function PortfolioShowcase() {
                         
                         {item.credential_id && (
                           <p className="text-xs text-white/40 text-center mt-3">
-                            ID: {item.credential_id}
+                            {item.credential_id}
                           </p>
+                        )}
+
+                        {item.credential_url && (
+                          <a
+                            href={item.credential_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="mt-4 flex items-center justify-center gap-2 text-sm text-white/70 hover:text-white transition"
+                          >
+                            View Certificate
+                            <ExternalLink size={14} />
+                          </a>
                         )}
                       </motion.div>
                     ))}
@@ -354,8 +388,7 @@ export default function PortfolioShowcase() {
             {activeTab === 'techstack' && (
               <div className="min-h-[360px] flex justify-center">
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 max-w-5xl w-full">
-                  {!loading &&
-                    allTechStack?.map((item, index) => (
+                  {allTechStack?.map((item, index) => (
                       <motion.div
                         key={item.id}
                         initial={{

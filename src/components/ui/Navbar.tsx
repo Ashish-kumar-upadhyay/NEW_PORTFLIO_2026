@@ -177,7 +177,7 @@ export default function Navbar() {
           }}
           aria-label="Ashish Kumar Upadhyay — Home"
         >
-          A. Kumar Upadhyay
+          Ashish Kumar Upadhyay
         </a>
 
         {!isMobile && (

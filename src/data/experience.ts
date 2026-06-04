@@ -22,19 +22,6 @@ export const experience: ExperienceItem[] = [
     ],
   },
   {
-    id: "fullstack",
-    period: "2023 — Present",
-    title: "Full Stack Development",
-    organization: "Masai School · Personal Projects",
-    description:
-      "Trained full stack developer focused on modern JavaScript ecosystems, clean architecture, and recruiter-ready deliverables.",
-    highlights: [
-      "Specialized in React.js, Next.js, TypeScript, and REST APIs",
-      "Firebase authentication, real-time data, and cloud hosting",
-      "1+ year of hands-on freelance and client project experience",
-    ],
-  },
-  {
     id: "client-projects",
     period: "2024 — 2026",
     title: "Client & Product Projects",
@@ -45,6 +32,21 @@ export const experience: ExperienceItem[] = [
       "Noamani Perfume — premium e-commerce with secure checkout",
       "LearnX — learning platform with auth and structured content",
       "Room Booking App — reservation flows and admin-ready UX",
+    ],
+  },
+  {
+    id: "masai-trainee",
+    period: "Aug 2024 — Mar 2025",
+    title: "Full Stack Development Trainee",
+    organization: "Masai School, Bangalore",
+    description:
+      "Completed 1000+ hours of intensive, industry-style Full Stack Development training — building real applications, collaborating in teams, and strengthening engineering fundamentals alongside modern web technologies.",
+    highlights: [
+      "Trained in React.js, Next.js, Node.js, MongoDB, Firebase, and JavaScript with production-focused projects",
+      "Developed and deployed end-to-end apps with authentication, database integration, and responsive UI",
+      "Collaborated on team projects using Git, GitHub, and version-control workflows",
+      "Applied debugging, performance optimization, and software engineering best practices",
+      "Strengthened Data Structures & Algorithms and problem-solving through regular coding challenges",
     ],
   },
 ];

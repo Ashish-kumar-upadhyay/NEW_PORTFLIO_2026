@@ -47,14 +47,15 @@ export default function ContactSection() {
         grid 
         grid-cols-1 
         lg:grid-cols-[420px_1fr] 
+        lg:items-stretch
         gap-6 sm:gap-8 md:gap-10 lg:gap-12
       "
       >
-        <div className="w-full">
+        <div className="w-full h-full flex">
           <ContactForm />
         </div>
 
-        <div className="w-full">
+        <div className="w-full h-full flex min-h-0">
           <CommentsSection />
         </div>
       </div>

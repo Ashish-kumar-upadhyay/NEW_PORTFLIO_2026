@@ -15,7 +15,7 @@ export const projects: Project[] = [
     title: "LearnX Learning Platform",
     description:
       "A full-featured learning platform with authentication, structured courses, and a modern dashboard. Built for scalable education delivery with React.js and a robust backend.",
-    image: "/assets/lms.png",
+    image: "/assets/project/lms.png",
     tech: ["Next.js", "React.js", "Node.js", "MongoDB", "Firebase", "JavaScript"],
     link: "https://learnxplatform.qzz.io/",
     featured: true,
@@ -25,7 +25,7 @@ export const projects: Project[] = [
     title: "Noamani Perfume E-commerce Website",
     description:
       "Premium perfume e-commerce with product catalog, filtering, cart, and secure checkout. Elegant UI designed for luxury retail and high conversion.",
-    image: "/assets/noamani.png",
+    image: "/assets/project/noamani.png",
     tech: ["Next.js", "React.js", "Node.js", "MongoDB", "Express.js", "Tailwind CSS"],
     link: "https://www.noamani.com/",
     featured: true,
@@ -35,7 +35,7 @@ export const projects: Project[] = [
     title: "Spylt Modern Website",
     description:
       "A sleek, animation-rich marketing site with responsive layouts and performance-focused delivery. Showcases modern front-end craft and brand storytelling.",
-    image: "/assets/project-placeholder.svg",
+    image: "/assets/project/spylt-modern.png",
     tech: ["React.js", "Next.js", "JavaScript", "CSS", "Vercel"],
     link: "https://spylt-modern-design.vercel.app/",
     featured: true,
@@ -45,7 +45,7 @@ export const projects: Project[] = [
     title: "Mojito Modern Website",
     description:
       "Contemporary landing experience with smooth interactions, mobile-first design, and fast Vercel deployment — ideal for product launches and portfolios.",
-    image: "/assets/project-placeholder.svg",
+    image: "/assets/project/mojito-modern.png",
     tech: ["React.js", "Next.js", "JavaScript", "HTML", "CSS", "Vercel"],
     link: "https://mojito-modern-website.vercel.app/",
     featured: true,
@@ -55,7 +55,7 @@ export const projects: Project[] = [
     title: "Room Booking App",
     description:
       "Hospitality booking application with availability flows, clean UX, and full stack integration. Built for real-world reservation use cases.",
-    image: "/assets/project-placeholder.svg",
+    image: "/assets/project/rrom-booking.png",
     tech: ["React.js", "Node.js", "Express.js", "MongoDB", "JavaScript"],
     link: "https://room-booking-ebon.vercel.app/",
     featured: true,

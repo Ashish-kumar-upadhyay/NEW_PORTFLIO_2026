@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { FileText, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 import App from "@/components/band/App";
 import TextType from "@/components/band/TextType";
 import { PERSON } from "@/lib/site";
@@ -79,7 +79,7 @@ export default function Hero({ showApp }: HeroProps) {
       </div>
 
       <div
-        className="md:max-w-[640px] w-full relative z-[5] flex flex-col md:flex-row md:items-center md:gap-10"
+        className="md:max-w-[640px] w-full relative z-[50] pointer-events-auto flex flex-col md:flex-row md:items-center md:gap-10"
       >
         {/* Profile — visible on mobile & as accent on desktop */}
         <motion.div
@@ -232,21 +232,12 @@ export default function Hero({ showApp }: HeroProps) {
             initial={false}
             animate={startAnim ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.8, delay: 0.65 }}
-            className="flex flex-wrap gap-3 mb-8"
+            className="mb-8"
           >
-            <a
-              href={PERSON.resumeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-white text-black text-sm font-semibold hover:opacity-90 transition"
-            >
-              <FileText size={15} aria-hidden />
-              Download Resume
-            </a>
             <button
               type="button"
               onClick={scrollToContact}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-white text-white text-sm font-semibold hover:bg-white/10 transition"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-white text-black text-sm font-semibold hover:opacity-90 transition cursor-pointer"
             >
               <Mail size={15} aria-hidden />
               Contact Me
