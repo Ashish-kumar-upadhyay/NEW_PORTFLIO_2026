@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion, Variants } from 'framer-motion'
-import { Send, User, Mail, MessageSquare } from 'lucide-react'
+import { Send, User, Mail, MessageSquare, Phone } from 'lucide-react'
 import { PERSON } from '@/lib/site'
 
 const smoothEase: [number, number, number, number] = [
@@ -21,12 +21,20 @@ const fieldVariants: Variants = {
   },
 }
 
-const emailLink = {
-  label: 'Email',
-  href: `mailto:${PERSON.email}`,
-  value: PERSON.email,
-  icon: Mail,
-}
+const contactLinks = [
+  {
+    label: 'Email',
+    href: `mailto:${PERSON.email}`,
+    value: PERSON.email,
+    icon: Mail,
+  },
+  {
+    label: 'Phone',
+    href: `tel:${PERSON.phone.replace(/\s/g, '')}`,
+    value: PERSON.phone,
+    icon: Phone,
+  },
+]
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -90,17 +98,22 @@ export default function ContactForm() {
         </p>
       </motion.div>
 
-      <a
-        href={emailLink.href}
-        className="flex items-center gap-3 text-sm text-white/65 hover:text-white transition py-1.5 mb-6"
-        aria-label={`Email ${PERSON.name}`}
-      >
-        <Mail size={16} className="shrink-0 text-white/40" aria-hidden />
-        <span className="font-mono text-xs text-white/40 w-16 shrink-0">
-          {emailLink.label}
-        </span>
-        <span className="truncate">{emailLink.value}</span>
-      </a>
+      <div className="space-y-1 mb-6">
+        {contactLinks.map(({ label, href, value, icon: Icon }) => (
+          <a
+            key={label}
+            href={href}
+            className="flex items-center gap-3 text-sm text-white/65 hover:text-white transition py-1.5"
+            aria-label={`${label} ${PERSON.name}`}
+          >
+            <Icon size={16} className="shrink-0 text-white/40" aria-hidden />
+            <span className="font-mono text-xs text-white/40 w-16 shrink-0">
+              {label}
+            </span>
+            <span className="truncate">{value}</span>
+          </a>
+        ))}
+      </div>
 
       <form onSubmit={handleSubmit} className="space-y-4 flex-1" noValidate>
         <motion.div variants={fieldVariants} initial="hidden" whileInView="show" viewport={{ once: true }}>

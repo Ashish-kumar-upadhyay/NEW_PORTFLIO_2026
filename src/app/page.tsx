@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 import AnimatedBackground from '@/components/AnimatedBackground'
@@ -15,22 +15,52 @@ import ContactSection from '@/components/sections/contact/ContactSection'
 import Footer from '@/components/sections/Footer'
 import WelcomeScreen from '@/components/WelcomeScreen'
 
-import { hasPlayedIntro, setIntroPlayed } from '@/lib/introState'
+import {
+  hasPlayedIntro,
+  setIntroPlayed,
+  consumeReturnToPortfolio,
+  peekReturnToPortfolio,
+  handleFreshDocumentLoad,
+} from '@/lib/introState'
+
+function getInitialShowWelcome() {
+  if (typeof window === 'undefined') return false
+  if (peekReturnToPortfolio()) return false
+  if (window.location.hash === '#portfolio') return false
+  return !hasPlayedIntro()
+}
+
+function scrollToPortfolioSection() {
+  document.getElementById('portfolio')?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start',
+  })
+}
 
 export default function Home() {
-  const [showWelcome, setShowWelcome] = useState(false)
-  const [showApp, setShowApp] = useState(true)
+  const [showWelcome, setShowWelcome] = useState(getInitialShowWelcome)
+  const [showApp, setShowApp] = useState(() => !getInitialShowWelcome())
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const currentHash = window.location.hash
     const pathname = window.location.pathname
+    const returningFromProject = peekReturnToPortfolio()
 
-    if (currentHash === '#portfolio') {
+    if (returningFromProject || currentHash === '#portfolio') {
+      consumeReturnToPortfolio()
       setShowWelcome(false)
       setShowApp(true)
+      setIntroPlayed()
+
+      requestAnimationFrame(() => {
+        scrollToPortfolioSection()
+        setTimeout(scrollToPortfolioSection, 350)
+        setTimeout(scrollToPortfolioSection, 900)
+      })
       return
     }
 
+    const isNewDocument = handleFreshDocumentLoad()
     const navEntries = performance.getEntriesByType('navigation')
     const navigationType =
       navEntries.length > 0
@@ -39,7 +69,7 @@ export default function Home() {
 
     const isReload = navigationType === 'reload'
 
-    if (isReload && pathname === '/') {
+    if (isNewDocument && isReload && pathname === '/') {
       sessionStorage.removeItem('introPlayed')
       sessionStorage.removeItem('heroPlayed')
 

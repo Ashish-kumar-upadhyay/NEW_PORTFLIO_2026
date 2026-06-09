@@ -1,479 +1,403 @@
-// ====== PORTFOLIO DETAIL PAGE ======
-// src/app/portfolio/[id]/page.tsx
-
 'use client'
 
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { motion, AnimatePresence } from 'framer-motion'
+import Image from 'next/image'
+import { motion } from 'framer-motion'
 import { supabase } from '@/lib/supabase'
+import { getProjectDetail, type ProjectDetail } from '@/data/projectDetails'
+import { setReturnToPortfolio } from '@/lib/introState'
 import {
   ArrowLeft,
-  ChevronLeft,
-  ChevronRight,
   ExternalLink,
   GitBranch,
   Sparkles,
   Code2,
   Layers,
-  X,
   Box,
+  BookOpen,
+  Shield,
+  Database,
+  FolderTree,
+  Target,
+  Briefcase,
 } from 'lucide-react'
+
+const smoothEase: [number, number, number, number] = [0.22, 1, 0.36, 1]
+
+type DbProject = {
+  title: string
+  description: string
+  technologies: string
+  key_features: string
+  image_url: string
+  live_url: string
+  github_url: string
+}
+
+function DetailSection({
+  icon: Icon,
+  title,
+  items,
+  delay = 0,
+}: {
+  icon: React.ElementType
+  title: string
+  items: string[]
+  delay?: number
+}) {
+  if (!items.length) return null
+
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay, ease: smoothEase }}
+      className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#101010] to-[#171717] p-5 md:p-6"
+    >
+      <div className="flex items-center gap-2 mb-4">
+        <Icon size={15} className="text-white/70" />
+        <h2 className="text-sm md:text-base font-semibold">{title}</h2>
+      </div>
+      <ul className="space-y-2.5 text-[12px] md:text-[13px] text-white/65 leading-6">
+        {items.map((item, i) => (
+          <motion.li
+            key={i}
+            initial={{ opacity: 0, x: -12 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: delay + i * 0.03, duration: 0.4 }}
+            className="flex gap-3"
+          >
+            <span className="text-white/35 shrink-0">•</span>
+            <span>{item}</span>
+          </motion.li>
+        ))}
+      </ul>
+    </motion.section>
+  )
+}
 
 export default function PortfolioDetailPage() {
   const { id } = useParams()
   const router = useRouter()
-
-  const [project, setProject] = useState<any>({
-    title: '',
-    description: '',
-    technologies: '',
-    key_features: '',
-    image_url: '',
-    image_urls: [],
-    live_url: '',
-    github_url: '',
-  })
-
-  const [currentImage, setCurrentImage] = useState(0)
-  const [previewOpen, setPreviewOpen] = useState(false)
+  const [project, setProject] = useState<ProjectDetail | null>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetchProject()
-  }, [])
+    const load = async () => {
+      const local = getProjectDetail(String(id))
+      if (local) {
+        setProject(local)
+        setLoading(false)
+        return
+      }
 
-  const fetchProject = async () => {
-    const { data } = await supabase
-      .from('projects')
-      .select('*')
-      .eq('id', id)
-      .single()
+      const { data } = await supabase
+        .from('projects')
+        .select('*')
+        .eq('id', id)
+        .single()
 
-    if (data) {
-      setProject(data)
+      if (data) {
+        const db = data as DbProject
+        setProject({
+          id: String(id),
+          title: db.title,
+          overview: db.description,
+          image: db.image_url,
+          link: db.live_url,
+          github: db.github_url,
+          keyFeatures: (db.key_features || '')
+            .split(',')
+            .map((f) => f.trim())
+            .filter(Boolean),
+          technicalImplementation: [],
+          technologies: (db.technologies || '')
+            .split(',')
+            .map((t) => t.trim())
+            .filter(Boolean),
+          learningOutcomes: [],
+          projectSignificance: db.description,
+        })
+      }
+      setLoading(false)
     }
-  }
 
-  const tech = (project?.technologies || '')
-    .split(',')
-    .filter((t: string) => t.trim() !== '')
-
-  const features = (project?.key_features || '')
-    .split(',')
-    .filter((f: string) => f.trim() !== '')
-
-  const galleryImages =
-    project?.image_urls && Array.isArray(project.image_urls)
-      ? project.image_urls
-      : project?.image_url
-      ? [project.image_url]
-      : []
-
-  const nextImage = () => {
-    if (currentImage < galleryImages.length - 1) {
-      setCurrentImage((prev) => prev + 1)
-    }
-  }
-
-  const prevImage = () => {
-    if (currentImage > 0) {
-      setCurrentImage((prev) => prev - 1)
-    }
-  }
+    load()
+  }, [id])
 
   const handleBack = () => {
-    sessionStorage.setItem('skipIntroOnce', 'true')
-    router.push('/#portfolio')
+    setReturnToPortfolio(String(id))
+    router.push('/')
   }
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-white/50">
+        Loading project details...
+      </div>
+    )
+  }
+
+  if (!project) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center text-white gap-4 px-6">
+        <p className="text-white/60">Project not found.</p>
+        <button
+          onClick={handleBack}
+          className="inline-flex items-center gap-2 text-sm text-white/70 hover:text-white transition"
+        >
+          <ArrowLeft size={14} />
+          Back to Projects
+        </button>
+      </div>
+    )
+  }
+
+  const isExternalImage =
+    project.image?.startsWith('http://') || project.image?.startsWith('https://')
+
   return (
-    <>
-      <AnimatePresence>
-        {previewOpen && (
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -40 }}
-            transition={{
-              duration: 0.55,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="fixed inset-0 z-[999] bg-black/95 backdrop-blur-xl flex items-center justify-center"
-          >
-            <button
-              onClick={() => setPreviewOpen(false)}
-              className="absolute top-6 right-6 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-300 flex items-center justify-center"
-            >
-              <X size={18} />
-            </button>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.6 }}
+      className="min-h-screen text-white px-6 md:px-10 lg:px-16 py-8 relative overflow-hidden"
+    >
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,#1a1a1a_0%,#0a0a0a_35%,#050505_100%)]" />
+      <div className="absolute top-[-200px] left-[-120px] w-[500px] h-[500px] rounded-full bg-white/[0.03] blur-[140px] -z-10" />
+      <div className="absolute bottom-[-250px] right-[-150px] w-[550px] h-[550px] rounded-full bg-white/[0.04] blur-[160px] -z-10" />
 
-            {currentImage > 0 && (
-              <button
-                onClick={prevImage}
-                className="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-300 flex items-center justify-center"
-              >
-                <ChevronLeft size={20} />
-              </button>
+      <div className="max-w-6xl mx-auto">
+        <motion.button
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          onClick={handleBack}
+          className="inline-flex items-center gap-2 text-[13px] text-white/50 hover:text-white transition-all duration-300 mb-8"
+        >
+          <ArrowLeft size={14} />
+          Back to Projects
+        </motion.button>
+
+        <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 lg:gap-12 items-start mb-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: smoothEase }}
+          >
+            {project.subtitle && (
+              <p className="text-xs md:text-sm text-white/45 font-mono tracking-wide mb-2 uppercase">
+                {project.subtitle}
+              </p>
+            )}
+            <h1 className="text-[28px] md:text-[42px] font-bold leading-tight tracking-tight mb-4">
+              {project.title}
+            </h1>
+            <div className="h-[2px] w-16 rounded-full bg-gradient-to-r from-white/40 to-white/5 mb-5" />
+
+            <p className="text-[13px] md:text-[14px] leading-7 text-white/65 text-justify mb-6">
+              {project.overview}
+            </p>
+
+            {project.stats && project.stats.length > 0 && (
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+                {project.stats.map((stat, i) => (
+                  <motion.div
+                    key={stat.label}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 + i * 0.05 }}
+                    className="rounded-2xl border border-white/10 bg-white/[0.04] p-3 text-center"
+                  >
+                    <p className="text-lg font-bold">{stat.value}</p>
+                    <p className="text-[10px] text-white/40 mt-1">{stat.label}</p>
+                  </motion.div>
+                ))}
+              </div>
             )}
 
-            <motion.img
-              key={currentImage}
-              initial={{ opacity: 0, x: 80 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -80 }}
-              transition={{
-                duration: 0.6,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              src={galleryImages[currentImage]}
-              className="max-w-[85vw] max-h-[80vh] rounded-3xl object-contain"
-            />
-
-            {currentImage < galleryImages.length - 1 && (
-              <button
-                onClick={nextImage}
-                className="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-300 flex items-center justify-center"
-              >
-                <ChevronRight size={20} />
-              </button>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-        className="min-h-screen text-white px-6 md:px-10 lg:px-16 py-8 relative overflow-hidden"
-      >
-        {/* Background */}
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,#1a1a1a_0%,#0a0a0a_35%,#050505_100%)]" />
-        <div className="absolute top-[-200px] left-[-120px] w-[500px] h-[500px] rounded-full bg-white/[0.03] blur-[140px] -z-10" />
-        <div className="absolute bottom-[-250px] right-[-150px] w-[550px] h-[550px] rounded-full bg-white/[0.04] blur-[160px] -z-10" />
-
-        <div className="grid lg:grid-cols-[1fr_0.85fr] gap-10 items-start">
-          {/* LEFT */}
-          <motion.div
-            initial={{ opacity: 0, x: -80 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{
-              duration: 0.95,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="max-w-[520px]"
-          >
-            {/* BACK + TITLE */}
-            <motion.div
-              initial={{ opacity: 0, x: -70 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{
-                duration: 1,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className="mb-8"
-            >
-              <button
-                onClick={handleBack}
-                className="inline-flex items-center gap-2 text-[13px] text-white/50 hover:text-white transition-all duration-300 mb-6"
-              >
-                <ArrowLeft size={14} />
-                Back
-              </button>
-
-              <motion.h1
-                initial={{ opacity: 0, x: -40 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{
-                  duration: 0.9,
-                  delay: 0.08,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                className="text-[28px] md:text-[38px] font-bold leading-tight tracking-tight mb-3"
-              >
-                {project.title}
-              </motion.h1>
-
-              <motion.div
-                initial={{ width: 0, x: -20 }}
-                animate={{ width: 65, x: 0 }}
-                transition={{
-                  duration: 0.9,
-                  delay: 0.15,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                className="h-[2px] rounded-full bg-gradient-to-r from-white/40 to-white/5 mb-5"
-              />
-            </motion.div>
-
-            <motion.p
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{
-                duration: 0.8,
-                delay: 0.15,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className="text-[12px] leading-6 text-white/60 text-justify mb-7"
-            >
-              {project.description}
-            </motion.p>
-
-            {/* STATS */}
-            <motion.div
-              initial={{ opacity: 0, x: -60 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{
-                duration: 0.85,
-                delay: 0.2,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className="grid grid-cols-2 gap-3 mb-7 max-w-[420px]"
-            >
-              <motion.div
-                whileHover={{ y: -3 }}
-                className="bg-gradient-to-br from-[#111] to-[#171717] border border-white/10 rounded-2xl p-3 flex items-center gap-3"
-              >
-                <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
-                  <Code2 size={16} />
+            <div className="grid grid-cols-2 gap-3 mb-6 max-w-sm">
+              <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-3 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center">
+                  <Code2 size={15} />
                 </div>
-
                 <div>
-                  <p className="text-base font-semibold">{tech.length}</p>
-                  <p className="text-[10px] text-white/40">
-                    Technologies Used
-                  </p>
+                  <p className="text-base font-semibold">{project.technologies.length}</p>
+                  <p className="text-[10px] text-white/40">Technologies</p>
                 </div>
-              </motion.div>
-
-              <motion.div
-                whileHover={{ y: -3 }}
-                className="bg-gradient-to-br from-[#111] to-[#171717] border border-white/10 rounded-2xl p-3 flex items-center gap-3"
-              >
-                <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
-                  <Layers size={16} />
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-3 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center">
+                  <Layers size={15} />
                 </div>
-
                 <div>
-                  <p className="text-base font-semibold">{features.length}</p>
+                  <p className="text-base font-semibold">{project.keyFeatures.length}</p>
                   <p className="text-[10px] text-white/40">Key Features</p>
                 </div>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
 
-            {/* BUTTONS */}
-            <motion.div
-              initial={{ opacity: 0, x: 55 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{
-                duration: 0.8,
-                delay: 0.28,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className="flex flex-wrap gap-3 mb-7"
-            >
-              {project.live_url ? (
+            <div className="flex flex-wrap gap-3">
+              {project.link ? (
                 <a
-                  href={project.live_url}
+                  href={project.link}
                   target="_blank"
-                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-br from-[#111] to-[#181818] border border-white/10 hover:bg-white/5 hover:border-white/20 transition-all duration-300 text-sm"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/10 border border-white/10 hover:bg-white/15 hover:border-white/20 transition-all text-sm"
                 >
                   <ExternalLink size={14} />
                   Live Demo
                 </a>
-              ) : (
-                <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#101010] border border-white/10 text-white/40 text-sm">
-                  <ExternalLink size={14} />
-                  No Link
-                </div>
-              )}
-
-              {project.github_url ? (
+              ) : null}
+              {project.github ? (
                 <a
-                  href={project.github_url}
+                  href={project.github}
                   target="_blank"
-                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-br from-[#111] to-[#181818] border border-white/10 hover:bg-white/5 hover:border-white/20 transition-all duration-300 text-sm"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 hover:bg-white/10 transition-all text-sm"
                 >
                   <GitBranch size={14} />
-                  Github
+                  GitHub
                 </a>
-              ) : (
-                <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#101010] border border-white/10 text-white/40 text-sm">
-                  <GitBranch size={14} />
-                  No Link
-                </div>
-              )}
-            </motion.div>
-
-            {/* TECH */}
-            {/* TECH */}
-<motion.div
-  initial={{ opacity: 0 }}
-  animate={{ opacity: 1 }}
-  transition={{
-    duration: 0.8,
-    delay: 0.08,
-    ease: [0.22, 1, 0.36, 1],
-  }}
->
-  <div className="flex items-center gap-2 mb-3">
-    <Code2 size={14} className="text-white/70" />
-    <p className="text-[13px] font-semibold">
-      Technologies Used
-    </p>
-  </div>
-
-  <div className="flex flex-wrap gap-2">
-  {tech.map((t: string, i: number) => (
-    <motion.div
-  key={i}
-  initial={{ opacity: 0 }}
-  animate={{ opacity: 1 }}
-  transition={{
-    delay: 0.12 + i * 0.04,
-    duration: 0.5,
-    ease: [0.22, 1, 0.36, 1],
-  }}
-  className="flex items-center gap-2 px-3 py-2 rounded-xl bg-gradient-to-br from-[#101010] to-[#181818] border border-white/10 text-[11px] text-white/75"
->
-  <Box size={11} className="text-white/40" />
-  {t.trim()}
-</motion.div>
-  ))}
-</div>
-</motion.div>
+              ) : null}
+            </div>
           </motion.div>
 
-          {/* RIGHT */}
-<motion.div
-  initial={{ opacity: 0, x: 80 }}
-  animate={{ opacity: 1, x: 0 }}
-  transition={{
-    duration: 1,
-    ease: [0.22, 1, 0.36, 1],
-  }}
-  className="w-full pt-10 md:pt-14"
->
-            {/* IMAGE */}
-            {galleryImages.length > 0 && (
-              <motion.div
-                initial={{ opacity: 0, x: 55 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{
-                  duration: 0.85,
-                  delay: 0.12,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                className="mb-5"
-              >
-                <div className="relative rounded-[26px] overflow-hidden border border-white/10 bg-gradient-to-br from-[#111] to-[#171717] max-w-[560px] mx-auto">
-                  <motion.img
-                    key={currentImage}
-                    initial={{ opacity: 0, x: 60 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{
-                      duration: 0.6,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                    src={galleryImages[currentImage]}
-                    onClick={() => setPreviewOpen(true)}
-                    className="w-full h-[220px] md:h-[250px] object-cover cursor-pointer"
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.85, ease: smoothEase }}
+            className="relative rounded-[28px] overflow-hidden border border-white/10 bg-gradient-to-br from-[#111] to-[#171717]"
+          >
+            {project.image ? (
+              isExternalImage ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full h-[240px] md:h-[320px] lg:h-[360px] object-cover"
+                />
+              ) : (
+                <div className="relative w-full h-[240px] md:h-[320px] lg:h-[360px]">
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 45vw"
+                    className="object-cover"
+                    priority
                   />
-
-                  {currentImage > 0 && (
-                    <button
-                      onClick={prevImage}
-                      className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center hover:bg-black/80 transition-all duration-300"
-                    >
-                      <ChevronLeft size={16} />
-                    </button>
-                  )}
-
-                  {currentImage < galleryImages.length - 1 && (
-                    <button
-                      onClick={nextImage}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center hover:bg-black/80 transition-all duration-300"
-                    >
-                      <ChevronRight size={16} />
-                    </button>
-                  )}
                 </div>
-
-                {galleryImages.length > 1 && (
-                  <div className="flex justify-center gap-2 mt-3">
-                    {galleryImages.map((_: any, i: number) => (
-                      <motion.button
-                        key={i}
-                        initial={{
-                          opacity: 0,
-                          x: i % 2 === 0 ? -10 : 10,
-                        }}
-                        animate={{
-                          opacity: 1,
-                          x: 0,
-                        }}
-                        transition={{
-                          delay: i * 0.04,
-                          duration: 0.45,
-                        }}
-                        onClick={() => setCurrentImage(i)}
-                        className={`rounded-full transition-all duration-300 ${
-                          currentImage === i
-                            ? 'w-6 h-1.5 bg-white'
-                            : 'w-1.5 h-1.5 bg-white/30'
-                        }`}
-                      />
-                    ))}
-                  </div>
-                )}
-              </motion.div>
-            )}
-
-            {/* FEATURES */}
-            <motion.div
-              initial={{ opacity: 0, x: -55 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{
-                duration: 0.9,
-                delay: 0.22,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              whileHover={{ y: -2 }}
-              className="bg-gradient-to-br from-[#101010] to-[#171717] border border-white/10 rounded-3xl p-5"
-            >
-              <div className="flex items-center gap-2 mb-4">
-                <Sparkles size={14} className="text-white/70" />
-                <p className="text-sm font-semibold">Key Features</p>
+              )
+            ) : (
+              <div className="w-full h-[240px] md:h-[320px] flex items-center justify-center text-white/30">
+                No preview
               </div>
-
-              <ul className="space-y-2.5 text-[12px] text-white/65 leading-6">
-                {features.map((f: string, i: number) => (
-                  <motion.li
-                    key={i}
-                    initial={{
-                      opacity: 0,
-                      x: i % 2 === 0 ? 30 : -30,
-                    }}
-                    animate={{
-                      opacity: 1,
-                      x: 0,
-                    }}
-                    transition={{
-                      delay: i * 0.05,
-                      duration: 0.55,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                    className="flex gap-3"
-                  >
-                    <span className="text-white/35">•</span>
-                    <span>{f.trim()}</span>
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
+            )}
           </motion.div>
         </div>
-      </motion.div>
-    </>
+
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15, duration: 0.6 }}
+          className="mb-8"
+        >
+          <div className="flex items-center gap-2 mb-3">
+            <Code2 size={14} className="text-white/70" />
+            <h2 className="text-sm font-semibold">Technologies Used</h2>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {project.technologies.map((tech, i) => (
+              <motion.span
+                key={tech}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2 + i * 0.03 }}
+                className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.04] border border-white/10 text-[11px] text-white/75"
+              >
+                <Box size={11} className="text-white/40" />
+                {tech}
+              </motion.span>
+            ))}
+          </div>
+        </motion.section>
+
+        <div className="grid md:grid-cols-2 gap-5 md:gap-6 pb-16">
+          <DetailSection
+            icon={Sparkles}
+            title="Key Features"
+            items={project.keyFeatures}
+            delay={0.2}
+          />
+          <DetailSection
+            icon={Target}
+            title="Technical Implementation"
+            items={project.technicalImplementation}
+            delay={0.25}
+          />
+          {project.projectStructure && (
+            <DetailSection
+              icon={FolderTree}
+              title="Project Structure"
+              items={project.projectStructure}
+              delay={0.3}
+            />
+          )}
+          {project.databaseArchitecture && (
+            <DetailSection
+              icon={Database}
+              title="Database Architecture"
+              items={project.databaseArchitecture}
+              delay={0.32}
+            />
+          )}
+          {project.securityFeatures && (
+            <DetailSection
+              icon={Shield}
+              title="Security Features"
+              items={project.securityFeatures}
+              delay={0.34}
+            />
+          )}
+          <DetailSection
+            icon={BookOpen}
+            title="Learning Outcomes"
+            items={project.learningOutcomes}
+            delay={0.36}
+          />
+          {project.role && (
+            <motion.section
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.38, ease: smoothEase }}
+              className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#101010] to-[#171717] p-5 md:p-6"
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <Briefcase size={15} className="text-white/70" />
+                <h2 className="text-sm md:text-base font-semibold">Your Role</h2>
+              </div>
+              <p className="text-[12px] md:text-[13px] text-white/65 leading-6">
+                {project.role}
+              </p>
+            </motion.section>
+          )}
+          <motion.section
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4, ease: smoothEase }}
+            className="md:col-span-2 rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.06] to-white/[0.02] p-5 md:p-6"
+          >
+            <div className="flex items-center gap-2 mb-3">
+              <Sparkles size={15} className="text-white/70" />
+              <h2 className="text-sm md:text-base font-semibold">Project Significance</h2>
+            </div>
+            <p className="text-[12px] md:text-[13px] text-white/65 leading-7">
+              {project.projectSignificance}
+            </p>
+          </motion.section>
+        </div>
+      </div>
+    </motion.div>
   )
 }

@@ -15,6 +15,8 @@ type Props = {
   live_url?: string;
   github?: string;
   tech?: string[];
+  inCarousel?: boolean;
+  isActive?: boolean;
 };
 
 export default function PortfolioCard({
@@ -26,6 +28,8 @@ export default function PortfolioCard({
   live_url,
   github,
   tech = [],
+  inCarousel = false,
+  isActive = true,
 }: Props) {
   const router = useRouter();
   const isExternalImage =
@@ -33,12 +37,18 @@ export default function PortfolioCard({
 
   return (
     <motion.article
-      initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50, y: 20 }}
-      whileInView={{ opacity: 1, x: 0, y: 0 }}
-      transition={{ duration: 0.75, delay: index * 0.06 }}
-      viewport={{ once: true }}
-      whileHover={{ y: -4 }}
-      className="group relative rounded-[26px] border border-white/10 bg-white/5 p-6 backdrop-blur-xl flex flex-col min-h-[380px]"
+      initial={
+        inCarousel
+          ? false
+          : { opacity: 0, x: index % 2 === 0 ? -50 : 50, y: 20 }
+      }
+      whileInView={inCarousel ? undefined : { opacity: 1, x: 0, y: 0 }}
+      transition={inCarousel ? undefined : { duration: 0.75, delay: index * 0.06 }}
+      viewport={inCarousel ? undefined : { once: true }}
+      whileHover={isActive ? { y: -4 } : undefined}
+      className={`group relative rounded-[26px] border border-white/10 bg-white/5 p-6 backdrop-blur-xl flex flex-col min-h-[380px] ${
+        inCarousel && isActive ? "bg-white/[0.07]" : ""
+      }`}
     >
       <div className="w-full h-44 rounded-2xl overflow-hidden border border-white/10 bg-white/[0.03] mb-4 relative">
         {image ? (

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import RefreshRedirect from "@/components/RefreshRedirect";
+import WhatsAppButton from "@/components/ui/WhatsAppButton";
 import JsonLd from "@/components/seo/JsonLd";
 import { PERSON, SEO, SITE_URL } from "@/lib/site";
 
@@ -90,6 +91,7 @@ export default function RootLayout({
         <JsonLd />
         <RefreshRedirect />
         {children}
+        <WhatsAppButton />
       </body>
     </html>
   );

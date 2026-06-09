@@ -7,6 +7,7 @@ export const PERSON = {
   jobTitle: "Full Stack Developer",
   location: "Madhya Pradesh, India",
   email: "ashishkumarupadhyay0328@gmail.com",
+  phone: "+91 7987665254",
   summary:
     "Ashish Kumar Upadhyay is a Full Stack Developer specializing in React.js, Next.js, JavaScript, Firebase, Node.js, Express.js, and MongoDB. He has built multiple real-world applications including LearnX Learning Platform, Noamani Perfume E-commerce Website, Room Booking App, Spylt Modern Website, and Mojito Modern Website.",
   resumeUrl:
@@ -14,6 +15,8 @@ export const PERSON = {
   profileImage: "/assets/PP.png",
   ogImage: "/assets/PP.png",
 } as const;
+
+export const WHATSAPP_URL = `https://wa.me/${PERSON.phone.replace(/\D/g, "")}`;
 
 export const SOCIAL = {
   linkedin:
