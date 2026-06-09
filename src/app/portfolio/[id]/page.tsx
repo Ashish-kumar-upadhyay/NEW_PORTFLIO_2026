@@ -21,6 +21,7 @@ import {
   FolderTree,
   Target,
   Briefcase,
+  type LucideIcon,
 } from 'lucide-react'
 
 const smoothEase: [number, number, number, number] = [0.22, 1, 0.36, 1]
@@ -41,7 +42,7 @@ function DetailSection({
   items,
   delay = 0,
 }: {
-  icon: React.ElementType
+  icon: LucideIcon
   title: string
   items: string[]
   delay?: number
