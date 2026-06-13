@@ -4,7 +4,7 @@ import "./globals.css";
 import RefreshRedirect from "@/components/RefreshRedirect";
 import WhatsAppButton from "@/components/ui/WhatsAppButton";
 import JsonLd from "@/components/seo/JsonLd";
-import { GA_MEASUREMENT_ID, PERSON, SEO, SITE_URL } from "@/lib/site";
+import { GA_MEASUREMENT_ID, PERSON, SEO, SITE_NAME, SITE_URL } from "@/lib/site";
 
 const ogImageUrl = `${SITE_URL}${PERSON.ogImage}`;
 
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_IN",
     url: SITE_URL,
-    siteName: PERSON.name,
+    siteName: SITE_NAME,
     title: SEO.title,
     description: SEO.description,
     images: [

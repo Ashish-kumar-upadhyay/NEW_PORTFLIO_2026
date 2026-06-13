@@ -2,8 +2,11 @@ export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
   "https://ashishupadhyay.qzz.io";
 
+/** Preferred Google Search site name (concise brand, not a tagline). */
+export const SITE_NAME = "Ashish Kumar Upadhyay";
+
 export const PERSON = {
-  name: "Ashish Kumar Upadhyay",
+  name: SITE_NAME,
   jobTitle: "Freelance Full Stack Developer",
   location: "Indore, Madhya Pradesh, India",
   address: {

@@ -1,4 +1,4 @@
-import { PERSON, SITE_URL, SOCIAL } from "@/lib/site";
+import { PERSON, SITE_NAME, SITE_URL, SOCIAL } from "@/lib/site";
 
 export default function JsonLd() {
   const personSchema = {
@@ -54,12 +54,17 @@ export default function JsonLd() {
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: `${PERSON.name} | Freelance Next.js & Firebase Developer`,
-    url: SITE_URL,
+    name: SITE_NAME,
+    alternateName: [
+      "Ashish kumar upadhyay",
+      "Ashish Kumar Upadhyay Full Stack Developer",
+      "ashishupadhyay.qzz.io",
+    ],
+    url: `${SITE_URL}/`,
     description: PERSON.summary,
-    author: {
+    publisher: {
       "@type": "Person",
-      name: PERSON.name,
+      name: SITE_NAME,
     },
   };
 
