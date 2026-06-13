@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { Mail } from "lucide-react";
 import App from "@/components/band/App";
 import TextType from "@/components/band/TextType";
+import CanvasErrorBoundary from "@/components/ui/CanvasErrorBoundary";
 import { PERSON } from "@/lib/site";
 
 const skills = [
@@ -75,7 +76,11 @@ export default function Hero({ showApp }: HeroProps) {
         }}
         aria-hidden={!showApp}
       >
-        {showApp && <App />}
+        {showApp && (
+          <CanvasErrorBoundary>
+            <App />
+          </CanvasErrorBoundary>
+        )}
       </div>
 
       <div
@@ -252,7 +257,7 @@ export default function Hero({ showApp }: HeroProps) {
             style={{ color: "var(--text-muted)" }}
           >
             <span>↓ explore projects & experience below</span>
-            <span>↗ open to full-time & freelance opportunities</span>
+            <span>↗ available for freelance & remote projects</span>
           </motion.div>
         </div>
       </div>

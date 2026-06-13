@@ -7,11 +7,14 @@ export default function JsonLd() {
     name: PERSON.name,
     jobTitle: PERSON.jobTitle,
     url: SITE_URL,
-    email: `mailto:${PERSON.email}`,
+    telephone: PERSON.phone,
     address: {
       "@type": "PostalAddress",
-      addressRegion: "Madhya Pradesh",
-      addressCountry: "IN",
+      streetAddress: PERSON.address.streetAddress,
+      addressLocality: PERSON.address.addressLocality,
+      addressRegion: PERSON.address.addressRegion,
+      postalCode: PERSON.address.postalCode,
+      addressCountry: PERSON.address.addressCountry,
     },
     sameAs: [SOCIAL.linkedin, SOCIAL.github, SOCIAL.instagram],
     knowsAbout: [
@@ -25,10 +28,33 @@ export default function JsonLd() {
     ],
   };
 
+  const localBusinessSchema = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    name: `${PERSON.name} — Freelance Full Stack Development`,
+    description: PERSON.summary,
+    url: SITE_URL,
+    telephone: PERSON.phone,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: PERSON.address.streetAddress,
+      addressLocality: PERSON.address.addressLocality,
+      addressRegion: PERSON.address.addressRegion,
+      postalCode: PERSON.address.postalCode,
+      addressCountry: PERSON.address.addressCountry,
+    },
+    areaServed: {
+      "@type": "Country",
+      name: "India",
+    },
+    priceRange: "$$",
+    sameAs: [SOCIAL.linkedin, SOCIAL.github, SOCIAL.instagram],
+  };
+
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: `${PERSON.name} | Full Stack Developer Portfolio`,
+    name: `${PERSON.name} | Freelance Next.js & Firebase Developer`,
     url: SITE_URL,
     description: PERSON.summary,
     author: {
@@ -53,6 +79,10 @@ export default function JsonLd() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
       />
       <script
         type="application/ld+json"

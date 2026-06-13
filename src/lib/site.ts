@@ -4,12 +4,19 @@ export const SITE_URL =
 
 export const PERSON = {
   name: "Ashish Kumar Upadhyay",
-  jobTitle: "Full Stack Developer",
-  location: "Madhya Pradesh, India",
+  jobTitle: "Freelance Full Stack Developer",
+  location: "Indore, Madhya Pradesh, India",
+  address: {
+    streetAddress: "Indore",
+    addressLocality: "Indore",
+    addressRegion: "Madhya Pradesh",
+    postalCode: "453441",
+    addressCountry: "IN",
+  },
   email: "ashishkumarupadhyay0328@gmail.com",
   phone: "+91 7987665254",
   summary:
-    "Ashish Kumar Upadhyay is a Full Stack Developer specializing in React.js, Next.js, JavaScript, Firebase, Node.js, Express.js, and MongoDB. He has built multiple real-world applications including LearnX Learning Platform, Noamani Perfume E-commerce Website, Room Booking App, Spylt Modern Website, and Mojito Modern Website.",
+    "Ashish Kumar Upadhyay is a Freelance Full Stack Developer specializing in React.js, Next.js, JavaScript, Firebase, Node.js, Express.js, and MongoDB. Based in Indore, Madhya Pradesh, he delivers production-ready web applications for clients worldwide.",
   resumeUrl:
     "https://drive.google.com/file/d/1K_ENQEWvcDYr4RY7j83oSt6vI1nCMsSw/view?usp=sharing",
   profileImage: "/assets/PP.png",
@@ -26,14 +33,19 @@ export const SOCIAL = {
 } as const;
 
 export const SEO = {
-  title: "Ashish Kumar Upadhyay | Full Stack Developer Portfolio",
+  title: "Ashish Kumar Upadhyay | Freelance Next.js & Firebase Developer",
   description:
-    "Ashish Kumar Upadhyay is a Full Stack Developer skilled in React.js, Next.js, JavaScript, Firebase, Node.js, Express.js, and MongoDB. Explore projects, skills, experience, and contact information.",
+    "Freelance Full Stack Developer Ashish Kumar Upadhyay — React.js, Next.js, Firebase & Node.js expert. Hire for web apps, APIs & portfolio projects.",
   keywords: [
     "Ashish Kumar Upadhyay",
+    "Freelance Full Stack Developer",
+    "Freelance developer India",
     "Full Stack Developer",
     "React.js developer",
     "Next.js developer",
+    "NextJS developer",
+    "Firebase developer",
+    "Indore developer",
     "Madhya Pradesh developer",
     "portfolio",
     "JavaScript developer",

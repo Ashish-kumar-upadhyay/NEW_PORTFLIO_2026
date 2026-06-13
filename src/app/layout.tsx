@@ -3,6 +3,7 @@ import "./globals.css";
 import RefreshRedirect from "@/components/RefreshRedirect";
 import WhatsAppButton from "@/components/ui/WhatsAppButton";
 import JsonLd from "@/components/seo/JsonLd";
+import GoogleAnalytics from "@/components/seo/GoogleAnalytics";
 import { PERSON, SEO, SITE_URL } from "@/lib/site";
 
 const ogImageUrl = `${SITE_URL}${PERSON.ogImage}`;
@@ -59,14 +60,15 @@ export const metadata: Metadata = {
   verification: {
     google: "AcvwynYb7Zgxrq3yFTFIeyRxnwOxwU7a_AARIseYezw",
   },
+  other: {
+    "geo.region": "IN-MP",
+    "geo.placename": "Indore, Madhya Pradesh, India 453441",
+  },
   manifest: "/manifest.json",
   icons: {
-    icon: [
-      { url: "/favicon.png", type: "image/png", sizes: "512x512" },
-      { url: "/assets/favicon.png", type: "image/png", sizes: "192x192" },
-    ],
-    apple: "/assets/favicon.png",
-    shortcut: "/favicon.png",
+    icon: "/assets/f.png",
+    apple: "/assets/f.png",
+    shortcut: "/assets/f.png",
   },
 };
 
@@ -84,6 +86,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <link rel="icon" href="/assets/f.png" type="image/png" sizes="any" />
+        <link rel="apple-touch-icon" href="/assets/f.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
@@ -92,6 +96,7 @@ export default function RootLayout({
         />
       </head>
       <body>
+        <GoogleAnalytics />
         <JsonLd />
         <RefreshRedirect />
         {children}

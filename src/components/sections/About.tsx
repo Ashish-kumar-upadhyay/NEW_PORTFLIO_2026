@@ -126,6 +126,41 @@ export default function About() {
               }}
             >
               <strong style={{ color: "var(--text-primary)" }}>
+                Next.js development:
+              </strong>{" "}
+              Server-side rendering, App Router, API routes, and performance
+              optimization for SEO-friendly React applications deployed on
+              Vercel.
+            </motion.p>
+
+            <motion.p
+              variants={fadeUp}
+              style={{
+                marginTop: 14,
+                fontSize: 14,
+                color: "var(--text-secondary)",
+                lineHeight: 1.85,
+                maxWidth: isMobile ? "100%" : "540px",
+              }}
+            >
+              <strong style={{ color: "var(--text-primary)" }}>
+                Firebase integration:
+              </strong>{" "}
+              Authentication, Firestore, Realtime Database, Cloud Storage, and
+              serverless functions for scalable full stack products.
+            </motion.p>
+
+            <motion.p
+              variants={fadeUp}
+              style={{
+                marginTop: 14,
+                fontSize: 14,
+                color: "var(--text-secondary)",
+                lineHeight: 1.85,
+                maxWidth: isMobile ? "100%" : "540px",
+              }}
+            >
+              <strong style={{ color: "var(--text-primary)" }}>
                 Skills & experience:
               </strong>{" "}
               React.js, Next.js, JavaScript, TypeScript, Firebase, Node.js,
@@ -145,9 +180,9 @@ export default function About() {
               }}
             >
               <strong style={{ color: "var(--text-primary)" }}>Career goals:</strong>{" "}
-              Join a product-focused team or grow as a senior freelance developer,
-              shipping high-impact features for global clients while building a
-              recognizable personal brand as {PERSON.name}.
+              Grow as a trusted freelance full stack developer, delivering
+              high-impact web products for global clients while building a
+              strong personal brand as {PERSON.name}.
             </motion.p>
 
             <motion.blockquote

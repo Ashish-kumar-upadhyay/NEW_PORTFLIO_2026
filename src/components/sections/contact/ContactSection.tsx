@@ -37,8 +37,8 @@ export default function ContactSection() {
         </h2>
 
         <p className="text-white/60 text-sm sm:text-base max-w-xl sm:max-w-2xl mx-auto leading-relaxed">
-          Have a project, role, or collaboration in mind? Reach out via the form
-          or connect on LinkedIn, GitHub, and Instagram.
+          Have a freelance project or collaboration in mind? Reach out via the
+          form or connect on LinkedIn, GitHub, and Instagram.
         </p>
       </motion.div>
 

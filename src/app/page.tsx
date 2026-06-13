@@ -12,6 +12,7 @@ import PortfolioShowcase from '@/components/sections/PortfolioShowcase'
 import Experience from '@/components/sections/Experience'
 import SocialMedia from '@/components/sections/SocialMedia'
 import ContactSection from '@/components/sections/contact/ContactSection'
+import SeoContent from '@/components/sections/SeoContent'
 import Footer from '@/components/sections/Footer'
 import WelcomeScreen from '@/components/WelcomeScreen'
 
@@ -99,16 +100,17 @@ export default function Home() {
 
   return (
     <>
-      <main style={{ position: 'relative', overflow: 'hidden' }}>
+      <main className="relative overflow-hidden">
         <AnimatedBackground />
 
-        <div style={{ position: 'relative', zIndex: 2 }}>
+        <div className="relative z-[2]">
           <Navbar />
           <Hero showApp={showApp} />
           <About />
           <Skills />
           <PortfolioShowcase />
           <Experience />
+          <SeoContent />
           <SocialMedia />
           <ContactSection />
         </div>
@@ -128,11 +130,7 @@ export default function Home() {
                 duration: 1.2,
                 ease: [0.76, 0, 0.24, 1],
               }}
-              style={{
-                position: 'fixed',
-                inset: 0,
-                zIndex: 9999,
-              }}
+              className="fixed inset-0 z-[9999]"
             >
               <WelcomeScreen />
             </motion.div>

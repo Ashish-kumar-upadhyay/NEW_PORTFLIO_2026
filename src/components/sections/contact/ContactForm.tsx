@@ -2,8 +2,9 @@
 
 import { useState } from 'react'
 import { motion, Variants } from 'framer-motion'
-import { Send, User, Mail, MessageSquare, Phone } from 'lucide-react'
+import { Send, User, Mail, MessageSquare, Phone, MapPin } from 'lucide-react'
 import { PERSON } from '@/lib/site'
+import { openEmailClient } from '@/lib/emailObfuscate'
 
 const smoothEase: [number, number, number, number] = [
   0.22,
@@ -21,20 +22,7 @@ const fieldVariants: Variants = {
   },
 }
 
-const contactLinks = [
-  {
-    label: 'Email',
-    href: `mailto:${PERSON.email}`,
-    value: PERSON.email,
-    icon: Mail,
-  },
-  {
-    label: 'Phone',
-    href: `tel:${PERSON.phone.replace(/\s/g, '')}`,
-    value: PERSON.phone,
-    icon: Phone,
-  },
-]
+const formattedAddress = `${PERSON.address.addressLocality}, ${PERSON.address.addressRegion}, India ${PERSON.address.postalCode}`
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -99,20 +87,38 @@ export default function ContactForm() {
       </motion.div>
 
       <div className="space-y-1 mb-6">
-        {contactLinks.map(({ label, href, value, icon: Icon }) => (
-          <a
-            key={label}
-            href={href}
-            className="flex items-center gap-3 text-sm text-white/65 hover:text-white transition py-1.5"
-            aria-label={`${label} ${PERSON.name}`}
-          >
-            <Icon size={16} className="shrink-0 text-white/40" aria-hidden />
-            <span className="font-mono text-xs text-white/40 w-16 shrink-0">
-              {label}
-            </span>
-            <span className="truncate">{value}</span>
-          </a>
-        ))}
+        <button
+          type="button"
+          onClick={openEmailClient}
+          className="flex items-center gap-3 text-sm text-white/65 hover:text-white transition py-1.5 w-full text-left"
+          aria-label={`Send email to ${PERSON.name}`}
+        >
+          <Mail size={16} className="shrink-0 text-white/40" aria-hidden />
+          <span className="font-mono text-xs text-white/40 w-16 shrink-0">
+            Email
+          </span>
+          <span>Send an email</span>
+        </button>
+
+        <a
+          href={`tel:${PERSON.phone.replace(/\s/g, '')}`}
+          className="flex items-center gap-3 text-sm text-white/65 hover:text-white transition py-1.5"
+          aria-label={`Phone ${PERSON.name}`}
+        >
+          <Phone size={16} className="shrink-0 text-white/40" aria-hidden />
+          <span className="font-mono text-xs text-white/40 w-16 shrink-0">
+            Phone
+          </span>
+          <span>{PERSON.phone}</span>
+        </a>
+
+        <p className="flex items-center gap-3 text-sm text-white/65 py-1.5">
+          <MapPin size={16} className="shrink-0 text-white/40" aria-hidden />
+          <span className="font-mono text-xs text-white/40 w-16 shrink-0">
+            Address
+          </span>
+          <span>{formattedAddress}</span>
+        </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4 flex-1" noValidate>

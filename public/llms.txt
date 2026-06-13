@@ -1,0 +1,35 @@
+# Ashish Kumar Upadhyay — Freelance Full Stack Developer
+
+> Freelance Full Stack Developer specializing in React.js, Next.js, Firebase, Node.js, Express.js, and MongoDB. Based in Indore, Madhya Pradesh, India (453441).
+
+## About
+
+Ashish Kumar Upadhyay is a Freelance Full Stack Developer who builds production-ready web applications for clients — including e-commerce platforms, ed-tech products, booking systems, and brand websites. Available for freelance contracts and remote collaborations worldwide.
+
+## Core Technologies
+
+- React.js and Next.js for frontend and full-stack applications
+- Firebase for authentication, realtime database, and cloud hosting
+- Node.js, Express.js, and MongoDB for REST APIs and backend services
+- TypeScript, Tailwind CSS, Vercel deployment
+
+## Featured Projects
+
+- LearnX Learning Platform
+- Noamani Perfume E-commerce Website
+- Room Booking App
+- Spylt Modern Website
+- Mojito Modern Website
+
+## Contact
+
+- Website: https://ashishupadhyay.qzz.io
+- LinkedIn: https://www.linkedin.com/in/ashish-kumar-upadhyay-071499284
+- GitHub: https://github.com/Ashish-kumar-upadhyay
+- Instagram: https://www.instagram.com/ashish.kumar.upadhyay
+- Phone: +91 7987665254
+- Location: Indore, Madhya Pradesh, India 453441
+
+## Sitemap
+
+- https://ashishupadhyay.qzz.io/sitemap.xml

@@ -26,12 +26,12 @@ export default function Skills() {
           id="skills-heading"
           className="text-3xl md:text-5xl font-bold mb-4"
         >
-          Skills & Technologies
+          Next.js, Firebase & Full Stack Skills
         </h2>
         <p className="text-white/55 max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
-          {PERSON.name} builds production-ready applications with modern
-          full stack tools — from responsive UIs to scalable APIs and cloud
-          deployment.
+          {PERSON.name} builds production-ready applications with Next.js,
+          Firebase, React.js, and modern full stack tools — from responsive
+          UIs to scalable APIs and cloud deployment.
         </p>
       </motion.div>
 

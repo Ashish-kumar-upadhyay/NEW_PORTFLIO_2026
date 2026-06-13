@@ -1,7 +1,7 @@
 {
   "name": "Ashish Kumar Upadhyay | Full Stack Developer Portfolio",
   "short_name": "Ashish Kumar Upadhyay",
-  "description": "Full Stack Developer portfolio — React.js, Next.js, Node.js, MongoDB",
+  "description": "Freelance Next.js & Firebase Full Stack Developer — React.js, Node.js, MongoDB",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0d0d0d",
@@ -9,13 +9,13 @@
   "lang": "en-IN",
   "icons": [
     {
-      "src": "/assets/favicon.png",
+      "src": "/assets/f.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/assets/favicon.png",
+      "src": "/assets/f.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
