@@ -24,13 +24,6 @@ import {
   handleFreshDocumentLoad,
 } from '@/lib/introState'
 
-function getInitialShowWelcome() {
-  if (typeof window === 'undefined') return false
-  if (peekReturnToPortfolio()) return false
-  if (window.location.hash === '#portfolio') return false
-  return !hasPlayedIntro()
-}
-
 function scrollToPortfolioSection() {
   document.getElementById('portfolio')?.scrollIntoView({
     behavior: 'smooth',
@@ -39,8 +32,9 @@ function scrollToPortfolioSection() {
 }
 
 export default function Home() {
-  const [showWelcome, setShowWelcome] = useState(getInitialShowWelcome)
-  const [showApp, setShowApp] = useState(() => !getInitialShowWelcome())
+  // Static defaults so SSR and the first client render match (sessionStorage is client-only).
+  const [showWelcome, setShowWelcome] = useState(false)
+  const [showApp, setShowApp] = useState(false)
 
   useLayoutEffect(() => {
     const currentHash = window.location.hash

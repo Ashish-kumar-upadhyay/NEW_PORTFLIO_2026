@@ -68,10 +68,8 @@ export default function Hero({ showApp }: HeroProps) {
       }}
     >
       <div
+        className="absolute inset-0 z-40"
         style={{
-          position: "absolute",
-          inset: 0,
-          zIndex: 40,
           pointerEvents: showApp ? "auto" : "none",
         }}
         aria-hidden={!showApp}

@@ -66,9 +66,9 @@ export const metadata: Metadata = {
   },
   manifest: "/manifest.json",
   icons: {
-    icon: "/assets/f.png",
-    apple: "/assets/f.png",
-    shortcut: "/assets/f.png",
+    icon: "/assets/fevicon.png",
+    apple: "/assets/fevicon.png",
+    shortcut: "/assets/fevicon.png",
   },
 };
 
@@ -86,8 +86,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/assets/f.png" type="image/png" sizes="any" />
-        <link rel="apple-touch-icon" href="/assets/f.png" />
+        <link rel="icon" href="/assets/fevicon.png" type="image/png" sizes="any" />
+        <link rel="apple-touch-icon" href="/assets/fevicon.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"

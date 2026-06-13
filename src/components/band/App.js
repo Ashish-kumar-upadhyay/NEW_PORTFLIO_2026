@@ -40,15 +40,7 @@ export default function App() {
 
   return (
     <div
-      className="responsive-wrapper"
-      style={{
-        position: 'absolute',
-        inset: 0,
-        width: '100%',
-        height: '100%',
-        pointerEvents: 'none',
-        zIndex: 1,
-      }}
+      className="responsive-wrapper absolute inset-0 w-full h-full pointer-events-none z-[1]"
     >
       <Canvas
         gl={{ alpha: true }}
