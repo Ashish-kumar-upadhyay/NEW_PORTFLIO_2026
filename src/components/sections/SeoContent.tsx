@@ -14,7 +14,7 @@ export default function SeoContent() {
         id="services-heading"
         className="text-2xl md:text-4xl font-bold mb-6 text-center"
       >
-        Next.js & Firebase Freelance Development
+        {PERSON.name} — Full Stack Development Services
       </h2>
 
       <div className="grid md:grid-cols-2 gap-8 text-sm md:text-base text-white/60 leading-relaxed">

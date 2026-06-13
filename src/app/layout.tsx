@@ -4,7 +4,7 @@ import "./globals.css";
 import RefreshRedirect from "@/components/RefreshRedirect";
 import WhatsAppButton from "@/components/ui/WhatsAppButton";
 import JsonLd from "@/components/seo/JsonLd";
-import { GA_MEASUREMENT_ID, PERSON, SEO, SITE_NAME, SITE_URL } from "@/lib/site";
+import { GA_MEASUREMENT_ID, PERSON, SEO, SITE_NAME, SITE_URL, SOCIAL } from "@/lib/site";
 
 const ogImageUrl = `${SITE_URL}${PERSON.ogImage}`;
 
@@ -18,8 +18,8 @@ export const metadata: Metadata = {
   keywords: [...SEO.keywords],
   authors: [{ name: PERSON.name, url: SITE_URL }],
   creator: PERSON.name,
-  publisher: PERSON.name,
-  applicationName: SEO.title,
+  publisher: SITE_NAME,
+  applicationName: SITE_NAME,
   category: "technology",
   alternates: {
     canonical: SITE_URL,
@@ -88,6 +88,10 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/assets/fevicon.png" type="image/png" sizes="any" />
         <link rel="apple-touch-icon" href="/assets/fevicon.png" />
+        <link rel="author" href={SITE_URL} />
+        <link rel="me" href={SOCIAL.linkedin} />
+        <link rel="me" href={SOCIAL.github} />
+        <link rel="me" href={SOCIAL.instagram} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"

@@ -39,21 +39,22 @@ export const SOCIAL = {
 } as const;
 
 export const SEO = {
-  title: "Ashish Kumar Upadhyay | Freelance Next.js & Firebase Developer",
+  title: "Ashish Kumar Upadhyay | Full Stack Developer Portfolio",
   description:
-    "Freelance Full Stack Developer Ashish Kumar Upadhyay — React.js, Next.js, Firebase & Node.js expert. Hire for web apps, APIs & portfolio projects.",
+    "Ashish Kumar Upadhyay — official Full Stack Developer portfolio from Indore, India. React.js, Next.js, Node.js, Firebase, MongoDB projects and freelance services.",
   keywords: [
     "Ashish Kumar Upadhyay",
+    "ashish kumar upadhyay",
+    "Ashish Kumar Upadhyay portfolio",
+    "Ashish Kumar Upadhyay full stack developer",
+    "Ashish Kumar Upadhyay developer Indore",
     "Freelance Full Stack Developer",
-    "Freelance developer India",
     "Full Stack Developer",
     "React.js developer",
     "Next.js developer",
-    "NextJS developer",
     "Firebase developer",
     "Indore developer",
     "Madhya Pradesh developer",
-    "portfolio",
     "JavaScript developer",
     "MongoDB developer",
   ],
