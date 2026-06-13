@@ -25,6 +25,9 @@ export const PERSON = {
 
 export const WHATSAPP_URL = `https://wa.me/${PERSON.phone.replace(/\D/g, "")}`;
 
+export const GA_MEASUREMENT_ID =
+  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "G-NG8S7Z3K6B";
+
 export const SOCIAL = {
   linkedin:
     "https://www.linkedin.com/in/ashish-kumar-upadhyay-071499284",

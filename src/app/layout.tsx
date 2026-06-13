@@ -1,10 +1,10 @@
 import type { Metadata, Viewport } from "next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 import RefreshRedirect from "@/components/RefreshRedirect";
 import WhatsAppButton from "@/components/ui/WhatsAppButton";
 import JsonLd from "@/components/seo/JsonLd";
-import GoogleAnalytics from "@/components/seo/GoogleAnalytics";
-import { PERSON, SEO, SITE_URL } from "@/lib/site";
+import { GA_MEASUREMENT_ID, PERSON, SEO, SITE_URL } from "@/lib/site";
 
 const ogImageUrl = `${SITE_URL}${PERSON.ogImage}`;
 
@@ -96,11 +96,11 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <GoogleAnalytics />
         <JsonLd />
         <RefreshRedirect />
         {children}
         <WhatsAppButton />
+        <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />
       </body>
     </html>
   );
