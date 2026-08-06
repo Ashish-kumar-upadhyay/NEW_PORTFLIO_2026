@@ -38,7 +38,7 @@ export default function Footer() {
         {PERSON.name} © {year}
       </p>
       <p className="text-xs text-white/45 font-mono tracking-wide mb-2">
-        {PERSON.name} — Full Stack Developer Portfolio | React.js | Next.js | Firebase
+        {PERSON.name} — Official Full Stack Developer Portfolio | React.js | Next.js | Firebase
       </p>
       <p className="text-xs text-white/40 mb-1">{formattedAddress}</p>
       <p className="text-xs text-white/40">

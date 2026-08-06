@@ -1,7 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion } from 'framer-motion'
+
+const NAVBAR_OFFSET = 90
+const SCROLL_DURATION = 900
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -10,6 +13,8 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState('home')
   const [mounted, setMounted] = useState(false)
   const [showNavbar, setShowNavbar] = useState(false)
+  const scrollAnimationRef = useRef<number | null>(null)
+  const isScrollingRef = useRef(false)
 
   useEffect(() => {
     setMounted(true)
@@ -20,6 +25,8 @@ export default function Navbar() {
 
     const handleScroll = () => {
       setScrolled(window.scrollY > 20)
+
+      if (isScrollingRef.current) return
 
       const sections = [
         'home',
@@ -71,52 +78,76 @@ export default function Navbar() {
     return () => clearTimeout(timer)
   }, [])
 
-  if (!mounted) return null
+  const smoothScrollTo = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+      e.preventDefault()
 
-  const smoothScrollTo = (
-    e: React.MouseEvent<HTMLAnchorElement>,
-    targetId: string
-  ) => {
-    e.preventDefault()
+      const target = document.querySelector(targetId)
+      if (!target) return
 
-    const target = document.querySelector(targetId)
-    if (!target) return
+      const sectionId = targetId.replace('#', '')
+      setActiveSection(sectionId)
+      setOpen(false)
 
-    const navbarOffset = 3
-    const targetPosition =
-      target.getBoundingClientRect().top + window.scrollY - navbarOffset
+      if (scrollAnimationRef.current !== null) {
+        cancelAnimationFrame(scrollAnimationRef.current)
+        scrollAnimationRef.current = null
+      }
 
-    const startPosition = window.scrollY
-    const distance = targetPosition - startPosition
-    const duration = 1200
+      const html = document.documentElement
+      const previousScrollBehavior = html.style.scrollBehavior
+      html.style.scrollBehavior = 'auto'
 
-    let startTime: number | null = null
+      const targetPosition =
+        target.getBoundingClientRect().top + window.scrollY - NAVBAR_OFFSET
 
-    const easeInOutCubic = (t: number) => {
-      return t < 0.5
-        ? 4 * t * t * t
-        : 1 - Math.pow(-2 * t + 2, 3) / 2
-    }
+      const startPosition = window.scrollY
+      const distance = targetPosition - startPosition
 
-    const animation = (currentTime: number) => {
-      if (startTime === null) startTime = currentTime
+      if (Math.abs(distance) < 2) {
+        html.style.scrollBehavior = previousScrollBehavior
+        history.replaceState(null, '', targetId)
+        return
+      }
 
-      const timeElapsed = currentTime - startTime
-      const progress = Math.min(timeElapsed / duration, 1)
-      const ease = easeInOutCubic(progress)
+      isScrollingRef.current = true
+      let startTime: number | null = null
 
-      window.scrollTo({
-        top: startPosition + distance * ease,
-      })
+      const easeOutQuart = (t: number) => 1 - Math.pow(1 - t, 4)
 
-      if (timeElapsed < duration) {
-        requestAnimationFrame(animation)
+      const animation = (currentTime: number) => {
+        if (startTime === null) startTime = currentTime
+
+        const timeElapsed = currentTime - startTime
+        const progress = Math.min(timeElapsed / SCROLL_DURATION, 1)
+        const ease = easeOutQuart(progress)
+
+        window.scrollTo(0, startPosition + distance * ease)
+
+        if (progress < 1) {
+          scrollAnimationRef.current = requestAnimationFrame(animation)
+        } else {
+          scrollAnimationRef.current = null
+          isScrollingRef.current = false
+          html.style.scrollBehavior = previousScrollBehavior
+          history.replaceState(null, '', targetId)
+        }
+      }
+
+      scrollAnimationRef.current = requestAnimationFrame(animation)
+    },
+    []
+  )
+
+  useEffect(() => {
+    return () => {
+      if (scrollAnimationRef.current !== null) {
+        cancelAnimationFrame(scrollAnimationRef.current)
       }
     }
+  }, [])
 
-    requestAnimationFrame(animation)
-    setOpen(false)
-  }
+  if (!mounted) return null
 
   const navItems = [
     { label: 'Home', id: 'home' },

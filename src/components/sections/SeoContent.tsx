@@ -17,6 +17,12 @@ export default function SeoContent() {
         {PERSON.name} — Full Stack Development Services
       </h2>
 
+      <p className="text-sm md:text-base text-white/55 text-center max-w-3xl mx-auto mb-10 leading-relaxed">
+        Welcome to the official website of {PERSON.name} — a Freelance Full
+        Stack Developer from {PERSON.location}. Explore projects, technical
+        skills, and development services below.
+      </p>
+
       <div className="grid md:grid-cols-2 gap-8 text-sm md:text-base text-white/60 leading-relaxed">
         <div>
           <h3 className="text-lg font-semibold text-white mb-3">

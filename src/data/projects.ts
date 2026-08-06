@@ -11,6 +11,16 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    id: "dr-rajat-maheshwari",
+    title: "Dr. Rajat Maheshwari — Appointment Booking",
+    description:
+      "Premium appointment booking platform for a vascular surgeon with modern UI, online scheduling, advanced SEO, Schema Markup, Google Search Console integration, and Vercel deployment.",
+    image: "/assets/project/Rajat-appiment-cilent.png",
+    tech: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion", "Vercel", "Schema.org SEO"],
+    link: "https://drrajatmaheshwari.dpdns.org",
+    featured: true,
+  },
+  {
     id: "doctor-appointment",
     title: "DocTime — Doctor Appointment",
     description:

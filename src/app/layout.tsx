@@ -3,6 +3,8 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 import RefreshRedirect from "@/components/RefreshRedirect";
 import WhatsAppButton from "@/components/ui/WhatsAppButton";
+import AiChatAssistant from "@/components/ai-chat/AiChatAssistant";
+import WelcomeAudioPreloader from "@/components/WelcomeAudioPreloader";
 import JsonLd from "@/components/seo/JsonLd";
 import { GA_MEASUREMENT_ID, PERSON, SEO, SITE_NAME, SITE_URL, SOCIAL } from "@/lib/site";
 
@@ -23,6 +25,9 @@ export const metadata: Metadata = {
   category: "technology",
   alternates: {
     canonical: SITE_URL,
+    languages: {
+      "en-IN": SITE_URL,
+    },
   },
   openGraph: {
     type: "website",
@@ -63,6 +68,9 @@ export const metadata: Metadata = {
   other: {
     "geo.region": "IN-MP",
     "geo.placename": "Indore, Madhya Pradesh, India 453441",
+    subject: "Ashish Kumar Upadhyay — Full Stack Developer Portfolio",
+    abstract:
+      "Official website of Ashish Kumar Upadhyay, Freelance Full Stack Developer from Indore, India.",
   },
   manifest: "/manifest.json",
   icons: {
@@ -88,6 +96,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/assets/fevicon.png" type="image/png" sizes="any" />
         <link rel="apple-touch-icon" href="/assets/fevicon.png" />
+        <link rel="home" href={SITE_URL} />
         <link rel="author" href={SITE_URL} />
         <link rel="me" href={SOCIAL.linkedin} />
         <link rel="me" href={SOCIAL.github} />
@@ -98,12 +107,15 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
+        <link rel="preload" href="/audio/welcome.mp3" as="fetch" type="audio/mpeg" />
       </head>
       <body>
+        <WelcomeAudioPreloader />
         <JsonLd />
         <RefreshRedirect />
         {children}
         <WhatsAppButton />
+        <AiChatAssistant />
         <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />
       </body>
     </html>

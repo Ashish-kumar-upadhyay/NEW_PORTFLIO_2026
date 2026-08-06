@@ -8,6 +8,16 @@ export const setIntroPlayed = () => {
   if (typeof window === 'undefined') return
 
   sessionStorage.setItem('introPlayed', 'true')
+  sessionStorage.setItem('welcomeAudioPlayed', 'true')
+}
+
+export const hasPlayedWelcomeAudio = () => {
+  if (typeof window === 'undefined') return false
+
+  return (
+    sessionStorage.getItem('welcomeAudioPlayed') === 'true' ||
+    sessionStorage.getItem('introPlayed') === 'true'
+  )
 }
 
 export const resetIntro = () => {

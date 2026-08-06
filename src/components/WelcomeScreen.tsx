@@ -2,9 +2,16 @@
 
 import { motion } from 'framer-motion'
 import { Code2, User, Globe } from 'lucide-react'
+import { INTRO_EASE, introTiming } from '@/lib/introTiming'
 
-export default function WelcomeScreen() {
+type WelcomeScreenProps = {
+  /** Gates animation start so audio + motion begin together */
+  started?: boolean
+}
+
+export default function WelcomeScreen({ started = true }: WelcomeScreenProps) {
   const icons = [Code2, User, Globe]
+  const t = introTiming
 
   return (
     <div
@@ -24,10 +31,10 @@ export default function WelcomeScreen() {
     >
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        animate={started ? { opacity: 1 } : { opacity: 0 }}
         transition={{
-          duration: 2,
-          ease: [0.22, 1, 0.36, 1],
+          duration: t.container.duration,
+          ease: INTRO_EASE,
         }}
         style={{
           textAlign: 'center',
@@ -43,12 +50,12 @@ export default function WelcomeScreen() {
         {/* ICONS */}
         <motion.div
           initial="hidden"
-          animate="visible"
+          animate={started ? 'visible' : 'hidden'}
           variants={{
             hidden: {},
             visible: {
               transition: {
-                staggerChildren: 0.35,
+                staggerChildren: t.icons.stagger,
               },
             },
           }}
@@ -77,13 +84,17 @@ export default function WelcomeScreen() {
                 },
               }}
               transition={{
-                duration: 1.8,
-                ease: [0.22, 1, 0.36, 1],
+                duration: t.icons.duration,
+                ease: INTRO_EASE,
               }}
-              animate={{
-                y: [0, -6, 0],
-                rotate: [0, 2, -2, 0],
-              }}
+              animate={
+                started
+                  ? {
+                      y: [0, -6, 0],
+                      rotate: [0, 2, -2, 0],
+                    }
+                  : undefined
+              }
               style={{
                 width: '42px',
                 height: '42px',
@@ -122,11 +133,11 @@ export default function WelcomeScreen() {
             {/* Welcome */}
             <motion.span
               initial={{ opacity: 0, x: 120 }}
-              animate={{ opacity: 1, x: 0 }}
+              animate={started ? { opacity: 1, x: 0 } : { opacity: 0, x: 120 }}
               transition={{
-                delay: 1.2,
-                duration: 1.6,
-                ease: [0.22, 1, 0.36, 1],
+                delay: t.welcome.delay,
+                duration: t.welcome.duration,
+                ease: INTRO_EASE,
               }}
               style={{
                 fontSize: 'clamp(18px, 3vw, 30px)',
@@ -140,11 +151,11 @@ export default function WelcomeScreen() {
             {/* to my */}
             <motion.span
               initial={{ opacity: 0, x: -120 }}
-              animate={{ opacity: 1, x: 0 }}
+              animate={started ? { opacity: 1, x: 0 } : { opacity: 0, x: -120 }}
               transition={{
-                delay: 1.5,
-                duration: 1.6,
-                ease: [0.22, 1, 0.36, 1],
+                delay: t.toMy.delay,
+                duration: t.toMy.duration,
+                ease: INTRO_EASE,
               }}
               style={{
                 fontSize: 'clamp(18px, 3vw, 30px)',
@@ -159,11 +170,11 @@ export default function WelcomeScreen() {
           {/* Portfolio */}
           <motion.h1
             initial={{ opacity: 0, y: 70 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={started ? { opacity: 1, y: 0 } : { opacity: 0, y: 70 }}
             transition={{
-              delay: 1.8,
-              duration: 1.6,
-              ease: [0.22, 1, 0.36, 1],
+              delay: t.portfolio.delay,
+              duration: t.portfolio.duration,
+              ease: INTRO_EASE,
             }}
             style={{
               fontSize: 'clamp(18px, 3vw, 30px)',
@@ -181,26 +192,26 @@ export default function WelcomeScreen() {
 
         {/* DOMAIN CAPSULE */}
         <motion.div
-  initial={{ opacity: 0, y: -40 }} // ⬅️ dari atas
-  animate={{ opacity: 1, y: 0 }}
-  transition={{
-    delay: 2.1,
-    duration: 1.6,
-    ease: [0.22, 1, 0.36, 1],
-  }}
-  style={{
-    padding: '6px 14px',
-    borderRadius: '999px',
-    border: '1px solid rgba(255,255,255,0.12)',
-    background: 'rgba(255,255,255,0.04)',
-    backdropFilter: 'blur(10px)',
-    fontSize: '12px',
-    letterSpacing: '0.12em',
-    color: 'rgba(255,255,255,0.7)',
-  }}
->
-  ashishupadhyay.qzz.io
-</motion.div>
+          initial={{ opacity: 0, y: -40 }}
+          animate={started ? { opacity: 1, y: 0 } : { opacity: 0, y: -40 }}
+          transition={{
+            delay: t.domain.delay,
+            duration: t.domain.duration,
+            ease: INTRO_EASE,
+          }}
+          style={{
+            padding: '6px 14px',
+            borderRadius: '999px',
+            border: '1px solid rgba(255,255,255,0.12)',
+            background: 'rgba(255,255,255,0.04)',
+            backdropFilter: 'blur(10px)',
+            fontSize: '12px',
+            letterSpacing: '0.12em',
+            color: 'rgba(255,255,255,0.7)',
+          }}
+        >
+          ashishupadhyay.qzz.io
+        </motion.div>
       </motion.div>
     </div>
   )

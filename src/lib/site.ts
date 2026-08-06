@@ -19,7 +19,7 @@ export const PERSON = {
   email: "ashishkumarupadhyay0328@gmail.com",
   phone: "+91 7987665254",
   summary:
-    "Ashish Kumar Upadhyay is a Freelance Full Stack Developer specializing in React.js, Next.js, JavaScript, Firebase, Node.js, Express.js, and MongoDB. Based in Indore, Madhya Pradesh, he delivers production-ready web applications for clients worldwide.",
+    "Ashish Kumar Upadhyay is the official portfolio of a Freelance Full Stack Developer based in Indore, Madhya Pradesh, India. Specializing in React.js, Next.js, JavaScript, Firebase, Node.js, Express.js, and MongoDB, Ashish Kumar Upadhyay delivers production-ready web applications for clients worldwide.",
   resumeUrl:
     "https://drive.google.com/file/d/1K_ENQEWvcDYr4RY7j83oSt6vI1nCMsSw/view?usp=sharing",
   profileImage: "/assets/PP.png",
@@ -39,15 +39,18 @@ export const SOCIAL = {
 } as const;
 
 export const SEO = {
-  title: "Ashish Kumar Upadhyay | Full Stack Developer Portfolio",
+  title: "Ashish Kumar Upadhyay — Official Website & Portfolio",
   description:
-    "Ashish Kumar Upadhyay — official Full Stack Developer portfolio from Indore, India. React.js, Next.js, Node.js, Firebase, MongoDB projects and freelance services.",
+    "Ashish Kumar Upadhyay — official website and Full Stack Developer portfolio. Freelance web developer from Indore, India. React.js, Next.js, Node.js, Firebase, MongoDB projects, skills, and contact.",
   keywords: [
     "Ashish Kumar Upadhyay",
     "ashish kumar upadhyay",
+    "Ashish Kumar Upadhyay official website",
     "Ashish Kumar Upadhyay portfolio",
     "Ashish Kumar Upadhyay full stack developer",
     "Ashish Kumar Upadhyay developer Indore",
+    "Ashish Kumar Upadhyay freelance developer",
+    "who is Ashish Kumar Upadhyay",
     "Freelance Full Stack Developer",
     "Full Stack Developer",
     "React.js developer",

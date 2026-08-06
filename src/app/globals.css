@@ -30,13 +30,16 @@ body {
   color: var(--text-primary);
   font-family: 'Syne', sans-serif;
   -webkit-font-smoothing: antialiased;
-}
-
-body {
   overflow-x: hidden;
 }
-html {
-  scroll-behavior: smooth;
+
+#home,
+#about,
+#skills,
+#portfolio,
+#experience,
+#contact {
+  scroll-margin-top: 90px;
 }
 
 * {
@@ -105,4 +108,13 @@ textarea {
 
 .custom-scroll::-webkit-scrollbar-thumb:hover {
   background: rgba(255,255,255,0.2);
+}
+
+.ai-chat-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+}
+
+.ai-chat-markdown :where(p, ul, ol):last-child {
+  margin-bottom: 0;
 }

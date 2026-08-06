@@ -98,7 +98,7 @@ export default function Hero({ showApp }: HeroProps) {
           <div className="w-[88px] h-[88px] rounded-full border border-white/20 p-1 overflow-hidden">
             <Image
               src={PERSON.profileImage}
-              alt={`${PERSON.name} — Full Stack Developer`}
+              alt={`${PERSON.name} — Official Profile Photo`}
               width={88}
               height={88}
               priority

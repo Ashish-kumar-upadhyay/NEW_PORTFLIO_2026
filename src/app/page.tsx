@@ -1,6 +1,6 @@
 'use client'
 
-import { useLayoutEffect, useState } from 'react'
+import { useCallback, useLayoutEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 import AnimatedBackground from '@/components/AnimatedBackground'
@@ -15,6 +15,7 @@ import ContactSection from '@/components/sections/contact/ContactSection'
 import SeoContent from '@/components/sections/SeoContent'
 import Footer from '@/components/sections/Footer'
 import WelcomeScreen from '@/components/WelcomeScreen'
+import { useWelcomeIntro } from '@/hooks/useWelcomeIntro'
 
 import {
   hasPlayedIntro,
@@ -32,9 +33,21 @@ function scrollToPortfolioSection() {
 }
 
 export default function Home() {
-  // Static defaults so SSR and the first client render match (sessionStorage is client-only).
   const [showWelcome, setShowWelcome] = useState(false)
   const [showApp, setShowApp] = useState(false)
+  const [portfolioVisible, setPortfolioVisible] = useState(false)
+
+  const finishIntro = useCallback(() => {
+    setIntroPlayed()
+    setShowApp(true)
+    setPortfolioVisible(true)
+    setShowWelcome(false)
+  }, [])
+
+  useWelcomeIntro({
+    enabled: showWelcome,
+    onComplete: finishIntro,
+  })
 
   useLayoutEffect(() => {
     const currentHash = window.location.hash
@@ -45,6 +58,7 @@ export default function Home() {
       consumeReturnToPortfolio()
       setShowWelcome(false)
       setShowApp(true)
+      setPortfolioVisible(true)
       setIntroPlayed()
 
       requestAnimationFrame(() => {
@@ -65,7 +79,6 @@ export default function Home() {
     const isReload = navigationType === 'reload'
 
     if (isNewDocument && isReload && pathname === '/') {
-      sessionStorage.removeItem('introPlayed')
       sessionStorage.removeItem('heroPlayed')
 
       if (window.location.hash) {
@@ -78,18 +91,13 @@ export default function Home() {
     if (!hasPlayedIntro()) {
       setShowWelcome(true)
       setShowApp(false)
-
-      const timer = setTimeout(() => {
-        setShowWelcome(false)
-        setShowApp(true)
-        setIntroPlayed()
-      }, 2800)
-
-      return () => clearTimeout(timer)
+      setPortfolioVisible(false)
+      return
     }
 
     setShowWelcome(false)
     setShowApp(true)
+    setPortfolioVisible(true)
   }, [])
 
   return (
@@ -97,7 +105,18 @@ export default function Home() {
       <main className="relative overflow-hidden">
         <AnimatedBackground />
 
-        <div className="relative z-[2]">
+        <motion.div
+          className="relative z-[2]"
+          initial={false}
+          animate={{
+            opacity: portfolioVisible ? 1 : 0,
+            scale: portfolioVisible ? 1 : 0.985,
+          }}
+          transition={{
+            duration: 0.75,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+        >
           <Navbar />
           <Hero showApp={showApp} />
           <About />
@@ -107,22 +126,17 @@ export default function Home() {
           <SeoContent />
           <SocialMedia />
           <ContactSection />
-        </div>
+        </motion.div>
 
         <AnimatePresence>
           {showWelcome && (
             <motion.div
-              initial={{ y: 0 }}
-              animate={{ y: 0 }}
-              exit={{ y: '-100%' }}
-              onAnimationStart={(definition) => {
-                if (definition === 'exit') {
-                  setShowApp(true)
-                }
-              }}
+              initial={{ opacity: 1 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{
-                duration: 1.2,
-                ease: [0.76, 0, 0.24, 1],
+                duration: 0.65,
+                ease: [0.22, 1, 0.36, 1],
               }}
               className="fixed inset-0 z-[9999]"
             >
