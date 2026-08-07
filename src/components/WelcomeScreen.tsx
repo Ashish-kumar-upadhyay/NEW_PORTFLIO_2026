@@ -2,16 +2,9 @@
 
 import { motion } from 'framer-motion'
 import { Code2, User, Globe } from 'lucide-react'
-import { INTRO_EASE, introTiming } from '@/lib/introTiming'
 
-type WelcomeScreenProps = {
-  /** Gates animation start so audio + motion begin together */
-  started?: boolean
-}
-
-export default function WelcomeScreen({ started = true }: WelcomeScreenProps) {
+export default function WelcomeScreen() {
   const icons = [Code2, User, Globe]
-  const t = introTiming
 
   return (
     <div
@@ -31,10 +24,10 @@ export default function WelcomeScreen({ started = true }: WelcomeScreenProps) {
     >
       <motion.div
         initial={{ opacity: 0 }}
-        animate={started ? { opacity: 1 } : { opacity: 0 }}
+        animate={{ opacity: 1 }}
         transition={{
-          duration: t.container.duration,
-          ease: INTRO_EASE,
+          duration: 2,
+          ease: [0.22, 1, 0.36, 1],
         }}
         style={{
           textAlign: 'center',
@@ -50,12 +43,12 @@ export default function WelcomeScreen({ started = true }: WelcomeScreenProps) {
         {/* ICONS */}
         <motion.div
           initial="hidden"
-          animate={started ? 'visible' : 'hidden'}
+          animate="visible"
           variants={{
             hidden: {},
             visible: {
               transition: {
-                staggerChildren: t.icons.stagger,
+                staggerChildren: 0.35,
               },
             },
           }}
@@ -84,17 +77,13 @@ export default function WelcomeScreen({ started = true }: WelcomeScreenProps) {
                 },
               }}
               transition={{
-                duration: t.icons.duration,
-                ease: INTRO_EASE,
+                duration: 1.8,
+                ease: [0.22, 1, 0.36, 1],
               }}
-              animate={
-                started
-                  ? {
-                      y: [0, -6, 0],
-                      rotate: [0, 2, -2, 0],
-                    }
-                  : undefined
-              }
+              animate={{
+                y: [0, -6, 0],
+                rotate: [0, 2, -2, 0],
+              }}
               style={{
                 width: '42px',
                 height: '42px',
@@ -133,11 +122,11 @@ export default function WelcomeScreen({ started = true }: WelcomeScreenProps) {
             {/* Welcome */}
             <motion.span
               initial={{ opacity: 0, x: 120 }}
-              animate={started ? { opacity: 1, x: 0 } : { opacity: 0, x: 120 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{
-                delay: t.welcome.delay,
-                duration: t.welcome.duration,
-                ease: INTRO_EASE,
+                delay: 1.2,
+                duration: 1.6,
+                ease: [0.22, 1, 0.36, 1],
               }}
               style={{
                 fontSize: 'clamp(18px, 3vw, 30px)',
@@ -151,11 +140,11 @@ export default function WelcomeScreen({ started = true }: WelcomeScreenProps) {
             {/* to my */}
             <motion.span
               initial={{ opacity: 0, x: -120 }}
-              animate={started ? { opacity: 1, x: 0 } : { opacity: 0, x: -120 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{
-                delay: t.toMy.delay,
-                duration: t.toMy.duration,
-                ease: INTRO_EASE,
+                delay: 1.5,
+                duration: 1.6,
+                ease: [0.22, 1, 0.36, 1],
               }}
               style={{
                 fontSize: 'clamp(18px, 3vw, 30px)',
@@ -170,11 +159,11 @@ export default function WelcomeScreen({ started = true }: WelcomeScreenProps) {
           {/* Portfolio */}
           <motion.h1
             initial={{ opacity: 0, y: 70 }}
-            animate={started ? { opacity: 1, y: 0 } : { opacity: 0, y: 70 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{
-              delay: t.portfolio.delay,
-              duration: t.portfolio.duration,
-              ease: INTRO_EASE,
+              delay: 1.8,
+              duration: 1.6,
+              ease: [0.22, 1, 0.36, 1],
             }}
             style={{
               fontSize: 'clamp(18px, 3vw, 30px)',
@@ -193,11 +182,11 @@ export default function WelcomeScreen({ started = true }: WelcomeScreenProps) {
         {/* DOMAIN CAPSULE */}
         <motion.div
           initial={{ opacity: 0, y: -40 }}
-          animate={started ? { opacity: 1, y: 0 } : { opacity: 0, y: -40 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{
-            delay: t.domain.delay,
-            duration: t.domain.duration,
-            ease: INTRO_EASE,
+            delay: 2.1,
+            duration: 1.6,
+            ease: [0.22, 1, 0.36, 1],
           }}
           style={{
             padding: '6px 14px',

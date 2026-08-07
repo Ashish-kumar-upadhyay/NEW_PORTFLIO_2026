@@ -4,7 +4,6 @@ import "./globals.css";
 import RefreshRedirect from "@/components/RefreshRedirect";
 import WhatsAppButton from "@/components/ui/WhatsAppButton";
 import AiChatAssistant from "@/components/ai-chat/AiChatAssistant";
-import WelcomeAudioPreloader from "@/components/WelcomeAudioPreloader";
 import JsonLd from "@/components/seo/JsonLd";
 import { GA_MEASUREMENT_ID, PERSON, SEO, SITE_NAME, SITE_URL, SOCIAL } from "@/lib/site";
 
@@ -107,10 +106,8 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
-        <link rel="preload" href="/audio/welcome.mp3" as="fetch" type="audio/mpeg" />
       </head>
       <body>
-        <WelcomeAudioPreloader />
         <JsonLd />
         <RefreshRedirect />
         {children}
