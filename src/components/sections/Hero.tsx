@@ -57,12 +57,9 @@ export default function Hero({ showApp }: HeroProps) {
     <section
       id="home"
       aria-label="Introduction"
-      className="px-6 md:pl-[120px] md:pr-[60px]"
+      className="px-6 flex justify-start max-md:pt-[84px] max-md:items-start max-md:pb-10 md:items-center md:pl-[120px] md:pr-[60px]"
       style={{
         minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "flex-start",
         position: "relative",
         overflow: "hidden",
       }}
@@ -84,29 +81,6 @@ export default function Hero({ showApp }: HeroProps) {
       <div
         className="md:max-w-[640px] w-full relative z-[50] pointer-events-auto flex flex-col md:flex-row md:items-center md:gap-10"
       >
-        {/* Profile — visible on mobile & as accent on desktop */}
-        <motion.div
-          initial={false}
-          animate={
-            startAnim
-              ? { opacity: 1, scale: 1 }
-              : { opacity: 0, scale: 0.9 }
-          }
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-6 md:mb-0 shrink-0 md:hidden"
-        >
-          <div className="w-[88px] h-[88px] rounded-full border border-white/20 p-1 overflow-hidden">
-            <Image
-              src={PERSON.profileImage}
-              alt={`${PERSON.name} — Official Profile Photo`}
-              width={88}
-              height={88}
-              priority
-              className="rounded-full object-cover w-full h-full"
-            />
-          </div>
-        </motion.div>
-
         <div className="flex-1">
           <motion.div
             initial={false}
@@ -126,22 +100,47 @@ export default function Hero({ showApp }: HeroProps) {
             </span>
           </motion.div>
 
-          <motion.h1
-            initial={false}
-            animate={
-              startAnim
-                ? { opacity: 1, scale: 1, y: 0 }
-                : { opacity: 0, scale: 0.85, y: 50 }
-            }
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            className="font-extrabold leading-[1.05] tracking-tight mb-2"
-            style={{
-              fontSize: "clamp(28px, 5.5vw, 52px)",
-              color: "var(--text-primary)",
-            }}
-          >
-            {PERSON.name}
-          </motion.h1>
+          {/* Mobile: profile beside name (<768px) | Desktop: heading only */}
+          <div className="mb-2 max-md:flex max-md:flex-col min-[380px]:max-md:flex-row min-[380px]:max-md:items-center max-md:gap-4 min-[380px]:max-md:gap-5">
+            <motion.div
+              initial={false}
+              animate={
+                startAnim
+                  ? { opacity: 1, scale: 1 }
+                  : { opacity: 0, scale: 0.9 }
+              }
+              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+              className="hero-mobile-avatar md:hidden shrink-0 max-[379px]:self-center"
+            >
+              <div className="hero-mobile-avatar-ring">
+                <Image
+                  src={PERSON.profileImage}
+                  alt={`${PERSON.name} — Official Profile Photo`}
+                  width={128}
+                  height={128}
+                  priority
+                  className="rounded-full object-cover w-full h-full"
+                />
+              </div>
+            </motion.div>
+
+            <motion.h1
+              initial={false}
+              animate={
+                startAnim
+                  ? { opacity: 1, scale: 1, y: 0 }
+                  : { opacity: 0, scale: 0.85, y: 50 }
+              }
+              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+              className="font-extrabold leading-[1.05] tracking-tight max-md:mb-0 md:mb-2 max-[379px]:text-center min-[380px]:max-md:text-left max-md:flex-1"
+              style={{
+                fontSize: "clamp(28px, 5.5vw, 52px)",
+                color: "var(--text-primary)",
+              }}
+            >
+              {PERSON.name}
+            </motion.h1>
+          </div>
 
           <motion.p
             initial={false}
